@@ -1,0 +1,68 @@
+-> Потоки вывода это просто вывод данных куда-либо. До этого я использовал один вид потока System.out -
+выводил данные в консоль, теперь тоже самое только для разных типов данных.
+
+->FileWriter & PrintWriter позволяют записывать данные в файлы. Их методы:
+1.void write(char[] cbuf) записывает массив символов
+2.void write(char[] cbuf, int off, int len) записывает часть массива символов
+3.void write(int c)пишет один символ
+4.void write(String str) записывает строку
+5.void write(String str, int off, int len)записывает часть строки
+6. close() - ОБЯЗАТЕЛЬНО ЗАКРЫВАТЬ ПОТОК ПОСЛЕ РАБОТЫ Либо использовать try-with-resources
+
+Есть также классы(помимо FileWriter & PrintWriter):
+1)StringWriter
+2)CharArrayWriter
+
+-->Рассмотрим CharArrayWriter: СНАЧАЛА ЗАПИСЫВАЕМ В CharArrayWriter, потом на носитель!!!
+1) Метод writeTo - записывает информацию из CharArrayWriter в носители:
+CharArrayWriter contactWriter = new CharArrayWriter();
+
+FileWriter bc1 = new FileWriter("business_card_1.txt", true); // параметр true говорит, что мы добавляем в файл инфу
+Если бы было false, то мы бы перезаписывали файл
+FileWriter bc2 = new FileWriter("business_card_2.txt", true);
+
+contactWriter.write("Phone: 111-222-333; Address: Java Avenue, 7");
+contactWriter.writeTo(bc1);
+contactWriter.writeTo(bc2);
+
+char[] array = contactWriter.toCharArray(); // writer content as char[]
+
+bc1.close();
+bc2.close();
+contactWriter.close();
+
+
+
+--> Классы для выходного потока Байтов:
+Главный абстрактный класс - java.io.OutputStream
+Если мы захотим с помощью классов ниже передать строку, то сначала ее нужно будет сконвертировать в байты,
+иначе выдаст ошибку. Делается это:
+String str = "stream";
+byte[] strAsBytes = str.getBytes(); // convert String to byte[]
+
+Классы:
+1.FileOutputStream - Предназначен для записи байтов в файлы
+2.ByteArrayOutputStream - записывает байты в массив byte[]
+3. FilterOutputStream / PipedOutputStream - промежуточные фильтрующие потоки
+
+Методы:
+1.void write(byte[] b) записывает массив байтов
+2.void write(byte[] b, int off, int len) записывает часть массива байтов
+3.abstract void write(int b) пишет один байт
+4. close() / try-with-resources
+
+->Рассмотрим класс FileOutputSteam:
+Конструкторы:
+FileOutputStream(String fileName)
+FileOutputStream(String fileName, boolean append)  // Вторым аргументом идет true/false , true - добавляет, false - перезаписывает.
+FileOutputStream(File file)
+FileOutputStream(File file, boolean append)
+
+Есть файла, указанного аргументом конструктора нет - класс создаст его.
+
+Пример:
+byte[] data = new byte[] {'s', 't', 'r', 'e', 'a', 'm'};
+OutputStream outputStream = new FileOutputStream("sample.txt", false);
+outputStream.write(data);
+outputStream.close();
+Если файла sample.txt нет, то Java создаст его и запишет туда массив data.

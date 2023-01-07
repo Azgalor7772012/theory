@@ -1,0 +1,145 @@
+Ссылки:
+https://topuch.com/chem-yavlyaetsya-stream-v-kontekste-java/index.html
+https://topuch.com/1-funkcionalenie-interfejsi-osnovnie-tipi/index.html#pages
+
+Stream - последовательность элементов, поддерживающих последовательные и параллельные операции над ними
+При этом не меняет сам объект, на котором были вызваны
+Stream - интерфейс в Java
+Буквами i и t помечаю Intermediate и Terminal методы - Интермидиэйт методы не сработают, если после них
+не вызван Терминал метод
+->Стримы нельзя переиспользовать. То есть создать Stream и 2 раза пустить его по какой-то цепочке действий,
+только 1 раз
+
+Можно создать свой стрим:
+Stream<Integer> myStream = Stream.of(12, 12, 24, 45);
+myStream.someMethod()
+
+->Откуда можно получить Stream:
+1)Из любой коллекции с помощью метода .stream()
+2)BufferedReader с помощью метода .lines() - нужно закрывать .close()/try-with-resources
+Stream<String> stream = reader.lines();
+3)Из директории на диске: - нужно закрывать .close()/try-with-resources
+Stream<Path> stream = Files.list(path); - получим стрим из 1 директории
+Stream<Path> stream = Files.walk(path); - рекурсивно обойдем все директории и из всех получим стрим
+4)Из массива Arrays.stream(arr)
+5)Создать самому Stream stream = Stream.of(...);
+и еще много
+
+Методы:
+1)map {i}  - позволяет обрабатывать каждый элемент массива/коллекции. При этом не меняет сам объект, на котором
+были вызваны
+
+Вместо элементов взяли длину элемента и вставили в новый список типа Integer
+List<Integer> list2 = list.stream().map(elem -> elem.length())
+                .collect(Collectors.toList());
+
+
+2)boolean filter {i} - фильтрует данные из коллекции/массива. Выдаст только те данные, которые прошли по фильтру
+
+List<Student> arr  = students.stream().filter(element ->
+                element.getAge() < 25 && element.getCourse() < 5)
+                .collect(Collectors.toList());
+
+3)void forEach {t}- помогает проходиться по всем элементам.
+
+4)reduce(accu, el) {t}- при применение всегда получаем 1 элемент, превращаем н-ное кол-во элементов коллекции в один
+        int sum = list.stream().reduce((accumulator, element) ->
+                accumulator + element).get();
+Метод get нужен, чтобы из Optional получить значение
+Optional - является оберткой для нашего значения, нам надо вытащить с помощью .get() наше значение.
+Это сделано, чтобы обезопасить себя от получения элемента null.
+accumulator - как промежуточная переменная в for loop, в нее по умолчанию идет 1 элемент коллекции
+После того, как произошло действие над аккумулятором и элементом, это значение передается аккумулятору
+element - присваиваются элементы коллекции, начиная со 2
+
+        int sum2 = list.stream().reduce(1, (accumulator, el) -> accumulator + el);
+        System.out.println(sum2); //25
+То же самое, но теперь аккумулятор первое значение имеет 1 вместо первого элемента коллекции
+А первое значение el = первое значение коллекции
+Тут нет возможности получить null значение, поэтому здесь возвращается сразу int вместо Optional
+
+5)sorted(comporator) {i}- сортирует коллекцию
+List<Integer> list2 = list.stream().sorted().collect(Collectors.toList());
+Внутрь sorted() можно передать comporator:
+List<Student> result = students.stream().sorted((o1, o2) ->
+                o1.getAge() - o2.getAge()).collect(Collectors.toList());
+
+
+6)concat(stream1, stream2) - объединяет 2 стрима
+
+7)distinct {i} - возвращает Stream уникальных элементов
+
+8)long count {t} - считает сколько элементов содержит Stream и возвращает это число
+
+9)peek {i} - помогает посмотреть что происходит в процессе method Chaining
+stream.distinct().peek(System.out::println) - будем смотреть каждый элемент на консоле
+
+10)flatMap {i} - как метод map, но используется когда нужно работать не с самими элементами, а с элементами
+элементов нашей коллекции
+facultyList.stream().flatMap(faculty -> faculty.getStundentsOnFacuilty().stream())
+                .forEach(el -> System.out.println(el.getName()));
+Вызвали Stream у листа faculty после у коллекции faculty для элементов этой коллекции вызвали
+еще 1 стрим(то есть внутри листа faculty был еще один лист StudentsOnFaculty) и уже с еще одним
+стримом работаем.
+
+
+11) collect(Сollectors) {t} - метод для преобразования потока в какой-то объект. Принимает статический класс
+Collectors с его методами toList/toSet etc.
+Также у класса Collectors есть 2 метода:
+
+groupingBy(key) - возвращает коллекцию Map, где ключом будет то значение, которое мы передали аргументов в
+метод, а значением - все значения, которые имели данный ключ:
+ Map<Integer, List<Student>> mapStudents = students.stream()
+            .collect(Collectors.groupingBy(el -> el.getCourse()));
+
+partioningBy(key) - делит коллекцию на 2 части по какому-то параметру. Например у нас разделил на студентов до
+2 курса и после. При этом ключе является Boolean значение true/false:
+Map<Boolean, List<Student>> secMap = students.stream().
+                collect(Collectors.partitioningBy(el -> el.getCourse() > 2));
+
+12)findFirst(comporator) {t} - возвращает первый элемент нашего стрима. При этом возвращает Optional,т.к может быть null.
+Для того,чтобы получить элемент того класса, каким он является нужно использовать метод .get();
+
+13)min / max (comporator) {t} - возвращает минимальный и максимальный элемент из коллекции, параметром принимает
+компоратор, отдает Optional:
+Student st = students.stream().min((o1,o2) -> o1.getAge() - o2.getAge()).get();
+Student s = students.stream().max((o1,o2) -> o1.getAge() - o2.getAge()).get();
+
+14)limit(long n) {i} - ограничивает количество элементов в стриме. Аргументом принимает количество
+long для ограничения. И оставляет первые элементы из стрима(то есть первые сколько-то, сколько мы ограничили)
+
+15)skip(long n) {i} - как метод лимит, но пропускает первое n количество элементов из стрима.
+
+16)mapToInt/maptoDouble etc {i} - возвращает стрим Интов, Даблов(IntStream/DoubleStream) и тд.
+Для того, чтобы вернуть не примитивный тип данных, а ссылочный, нужно использовать метод .boxed
+List<Integer> courses = students.stream()
+                .mapToInt(el -> el.getCourse())
+                .boxed().toList();
+Подметоды:
+1 .sum - вернет сумму всех значений того поля, которого мы выбрали
+int sum = students.stream().mapToInt(el -> el.getCourse()).sum();
+2 .average - вернет среднее арифметическое всех выбранных полей
+double average = students.stream().mapToInt(el -> el.getCourse()).average().getAsDouble();
+3 .min() - возвращает минимальное значение из всех выбранных полей
+int min = students.stream().mapToInt(el -> el.getCourse()).min().getAsInt();
+4 . max() - возвращает максимальное значение из всех выбранных полей
+int max = students.stream().mapToInt(el -> el.getCourse()).max().getAsInt();
+
+
+Преобразовать Stream в коллекцию - .collect(Collectors.toList() /toSet()/toMap()
+Преобразовать Stream в массив - .toArray()
+Чтобы вызвать Stream у массива нужно написать Arrays.stream(arr).method
+
+-->Parallel Stream - это возможность использования нескольких ядер процессора при выполнении каких-либо
+операций со stream. То есть разные ядра выполняют разные задания, а после результат их выполнения
+объединяется
+Сделать стрим параллельным можно следующими способами:
+1)Когда мы получаем стрим из готовой коллекции:
+list.parallelStream(). ...
+2)Когда создаем стрим с нуля и вызываем метод .pasrallel()
+Stream<T> s = Stream.of(...)
+s.parallel(). ...
+
+Параллельные стримы нужно использовать, когда у нас очень много эле-тов + когда нам не важна последо-
+вательность выполнения операций. Если последовательность важна, то нельзя использовать параллельные
+стримы, т.к ответ может быть неправильным.

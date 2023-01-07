@@ -1,0 +1,159 @@
+->Регулярные выражения - последовательность символов, описывающая общий шаблон для набора строк.
+Такие шаблоны можно использовать для поиска, редактирования и манипулирования текстами.
+Они могут либо проверить, соответствует ли целая строка или ее подстрока заданному шаблону,
+либо заменить подстроку другой.
+!Регулярные выражения чувствительны к регистру.
+
+Некоторые СИМВОЛЫ РЕГУЛЯРНЫХ ВЫРАЖЕНИЙ(WildCards):
+1) Символ точки(.) - означает любой одиночный символ, включая буквы,цифры,пробелы и т.д. за исключением
+символа переноса строки(\n)
+
+2) Символ вопрос.знака(?) - символ, обозначающий, что символ перед ним может встречаться в строке 1 или
+0 раз(То есть символ перед "?" может отсутствовать или быть, но только тот символ, который стоит перед ?)
+Пример:
+Шаблон .ark не соответствует слову ark, а шаблон .?ark соответствует слову ark
+
+3)Наборы символов '[]'- наборы символов записываются в [] скобках, внутри них мы можем писать любые символы,
+которые могут быть на этом месте.
+String pattern = "[bcr]at"; // it matches strings "bat", "cat", "rat", but not "fat"
+String pattern = "[ab]x[12]"; // can match a or b followed by x followed by either 1 or 2("ax1", "ax2", "bx1", "bx2")
+
+4)Наборы символов через '[A-Z]' - Если символов слишком много, то мы можем записать их в [] и через тире.
+String anyDigitPattern = "[0-9]"; // matches any digit from 0 to 9
+String anyLetterPattern = "[a-zA-Z]"; // matches any letter "a", "b", ..., "A", "B", ...
+String anyLetterPattern = "[a-z!?.A-Z]"; // matches any letter and "!", "?", "."
+Также здесь могут быть разные диапазоны в одних скобках:
+[A-Za-z0-9] ; [a-zA-Z_0-9] -  a - z , A - Z, 0 - 9 и еще _
+
+5)Исключение символов из строки '^' - В [] пишем ^ и после символы, которые не должны быть в нашей строке.
+Также оно работает для диапазонов
+String regex = "[^abc]"; // matches everything except for "a", "b", "c"
+"a".matches(regex); // false
+"d".matches(regex); // true
+
+String regex = "[^1-6]";
+"1".matches(regex); // false
+"2".matches(regex); // false
+"0".matches(regex); // true
+"9".matches(regex); // true
+
+6)Разделительный символ | - Мы можем писать отдельные слова(последовательности символов) для нахождения через
+спец.символ |.
+String pattern = "yes|no|maybe"; // matches "yes", "no", or "maybe"
+String pattern = "(b|r|go)at"; // matches "bat", "rat" or "goat"
+
+
+->Если мы хотим использовать спец.символы регулярных выражений, как обычные символы, то нам нужно их
+экранировать с помощью \ и экранировать еще и его, т.к каждый символ экранирования должен быть экранирован
+для регулярных выражений
+1.String endRegex = "The End\\.";
+"The End.".matches(endRegex); // true
+"The End?".matches(endRegex); // false
+2.String pattern = ".....\\.";
+"a1b2c.".matches(pattern); // true
+"Wrong.".matches(pattern); // true
+"Hello!".matches(pattern); // false
+
+
+->В Java регулярные выражения реализованы следующими способами:
+1) Метод .matches(regex) у String возвращает true/false:
+При этом строка должна полностью соответствовать регулярному выражению.
+String aleRegex = "ale"; // the "ale" regex
+"ale".matches(aleRegex);  // true
+"pale".matches(aleRegex); // false, "pale" string has an additional character
+"ALE".matches(aleRegex);  // false, uppercase letters don't match lowercase and vice versa
+Пример с спец.символом '.' и ''?':
+1.String learnRegex = "Learn.Regex";
+    "Learn Regex".matches(learnRegex); // true
+    "Learn.Regex".matches(learnRegex); // true
+    "LearnRegex".matches(learnRegex); // false
+    "Learn, Regex".matches(learnRegex); // false
+    "Learn\nRegex".matches(learnRegex); // false
+2.String pattern = "behaviou?r";
+    "behaviour".matches(pattern); // true
+    "behavior".matches(pattern);  // true
+3. String pattern = "..?";
+    "I".matches(pattern);  // true
+    "am".matches(pattern); // true
+    "".matches(pattern);   // false
+
+
+--> КВАНТИФИКАТОРЫ - квантификаторы в регулярных выражениях определяют сколько раз может встречаться тот
+или иной символ в строке.
+Существуют следующие квантификаторы:
+1) + соответствует одному или нескольким повторениям предыдущего символа;
+2) * соответствует нулю или более повторений предыдущего символа;
+Дальше внутри {} НЕ ДОЛЖНО БЫТЬ ПРОБЕЛОВ. И диапазоны используются включительно.
+3){n} точно соответствует n повторению предыдущего символа;
+4){n,m} соответствует как минимум n, но не более чем m повторам предыдущего символа;
+5){n,} соответствует как минимум n повторениям предыдущего символа;
+6){0,m}соответствует не более чем m повторениям предыдущего символа.
+
+Примеры:
+1. String regex = "ca+b";
+  "cab".matches(regex); // true
+  "caaaaab".matches(regex); // true
+  "cb".matches(regex); // false because it does not have at least one repetition of 'a'
+
+2. String regex = "A[0-3]*";
+   "A".matches(regex);  // true because the pattern matches zero or more repetitions
+   "A0".matches(regex); // true
+   "A000111222333".matches(regex); // true
+
+String johnRegex = ".*John.*"; // it matches all strings containing the substring "John"
+Это выражение значит, что до слова John и после него может быть неограниченное количество любых символов или
+не быть, поэтому:
+
+String textWithJohn = "My friend John is a computer programmer";
+textWithJohn.matches(johnRegex); // true
+String john = "John";
+john.matches(johnRegex); // true
+String textWithoutJohn = "My friend is a computer programmer";
+textWithoutJohn.matches(johnRegex); // false
+
+То есть с помощью * мы можем находить все строки с нужной нам подстрокой.
+
+3. String regex = "[0-9]{4}"; // ИМЕННО 4 повторения
+   "6342".matches(regex);  // true
+   "9034".matches(regex);  // true
+   "182".matches(regex);   // false
+   "54312".matches(regex); // false
+Здесь важно, что внутри {} не должно быть пробелов, только диапазон или точное количество повторений
+    String regex = "1{2,3}"; От 2 до 3 повторений
+    "1".matches(regex);    // false
+    "11".matches(regex);   // true
+    "111".matches(regex);  // true
+    "1111".matches(regex); // false
+
+    String regex = "ab{4,}"; Значит минимум 4 повторения
+    "abb".matches(regex); // false, not enough 'b'
+    "abbbb".matches(regex); // true
+    "abbbbbbb".matches(regex); // true
+
+-->СОКРАЩЕНИЯ:
+Вместо некоторых спец.символов регулярных выражений, которые используются чаще остальных, есть сокращения,
+которые обозначают тоже самое, но они короче:
+1) \d - любая цифра, сокращение от [0-9];
+2) \s - символ пробела (включая табуляцию и перевод строки), сокращение от [ \t\n\x0B\f\r];
+3) \w - буквенно-цифровой символ (слово), сокращение от [a-zA-Z_0-9], включая "_";
+4) \D - не цифра, сокращение от [^0-9];
+5) \S - не пробельный символ, сокращение от [^ \t\n\x0B\f\r];
+6) \b - граница слова. Примеры:
+"\ba"соответствует любая последовательность буквенно-цифровых символов, начинающаяся с «а»
+"a\b"соответствует любая последовательность буквенно-цифровых символов, которая заканчивается на «а»
+"\ba\b"соответствует отдельной «а», которой предшествуют и за которыми следуют не буквенно-цифровые
+символы(пробел, перенос строки, табуляция и т.д).
+7) \B - не является границей слова.
+\Ba - слово не начинается с a
+a\B - слово не кончается а
+(s - space, w -words, d - digits, b - boundary(граница))
+Примеры:
+String regex = "\\s\\w\\d\\s"; Везде двойные слэши
+
+" A5 ".matches(regex); // true
+" 33 ".matches(regex); // true
+"\tA4\t".matches(regex); // true, because tabs are whitespace as well
+
+"q18q".matches(regex); // false, 'q' is not a space
+" AB ".matches(regex); // false, 'B' is not a digit
+" -1 ".matches(regex); // false, '-' is not an alphanumeric character, but '1' is OK.

@@ -1,0 +1,224 @@
+Factory Method Pattern основывается на том, что:
+1)Мы создаем абстрактный класс или интерфейс с какими-то общими методами для ряда классов(скорее уместнее будет
+создавать абстрактный класс напр. Watch -> DigitalWatch ->SandWatch etc)
+
+2) Создаем Factory Method класс с возвращаемым типом первого абстрактного класса , в котором будет метод вызова
+экземпляра класса в зависимости от того, какой параметр передан методу. Типо "Sand" -> return new SandWatch(); / "Digital" -> return new DigitalWatch();
+
+3) В точке входа программы создаем экземпляр второго(Factory) класса, просто чтобы вызывать нужный нам класс с помощью
+передачи какого-то аргумента в метод этого класса.
+
+4) Последнее создаем переменную нужного Абстрактного нам класса(в нашем случае Watch) и через = вызываем Factory метод,
+а ему передаем параметром нужный нам класс и получается:
+CreateWatch createWatch = new createDigitalWatch();
+WatchActions rome = createWatch("Rome"); В таком плане.
+
+При этом все классы унаследовались от одного родительского абстрактного класса, получается у них у всех одни и те же
+сигнатуры методов и это очень удобно
+
+--> Класс возвращающий экземпляры принято называть ItemFactory
+
+import java.util.Date;
+
+public class FabricMethodPattern {
+    public static void main(String[] args) {
+        // Здесь нужно будет постоянно новый конструктор new, чтобы менять объект переменной
+        WatchActions watch = new RomeWatch();
+
+        // Здесь мы также меняем объект переменной, но сама функция остается неизменной
+        CreateWatch createWatch = new createDigitalWatch(); // Первое обертывание. Тут вызывается экземпляр Digital
+        WatchActions Watch = createWatch.createWatch(); //Пользовательский интерфейс остается неизменным. Второе обертывание
+        //Т.к был вызвал экземпляр Digital вернется метод из его экземпляра.
+        Watch.isPrice();
+        /*
+        То есть мы обертываем создание функции
+         */
+
+        //Делаем тоже самое с помощью статической функции + аргументов добавляем объекты дочернего класса интерфейса.
+        WatchActions rome = funcForWatchCreate("Rome");
+        rome.isPrice();
+    }
+
+    // Также этот метод может быть в отдельном классе, тогда придется импортировать этот для для метода.
+    static WatchActions funcForWatchCreate(String type) {
+        switch(type) {
+            case "Rome":
+                return new RomeWatch();
+            default:
+                return new DigitalWatch();
+        }
+    }
+}
+
+
+/* Интерфейс с классами, который просто для работы сделан. Тут методы, которые именно нужны для реализации
+И классы, которые имелементируют методы, просто рабочие классы, в которых будут нужные для нашей программы методы
+*/
+interface WatchActions {
+    void showTime();
+
+    void isPrice();
+}
+
+// Классы с рабочими методами
+class DigitalWatch implements WatchActions {
+
+    private int price = 1000;
+
+    @Override
+    public void showTime() {
+        System.out.println(new Date());
+    }
+
+    @Override
+    public void isPrice() {
+        System.out.println(this.price);
+    }
+}
+
+class RomeWatch implements WatchActions {
+    RomeWatch() {
+        System.out.println("HAHa");
+    }
+    private int price = 500;
+
+    @Override
+    public void showTime() {
+        System.out.println("XX-XI");
+    }
+
+    @Override
+    public void isPrice() {
+        System.out.println(this.price);
+    }
+}
+
+/*
+Здесь интерфейсы Fabric Method Pattern. Мы вызываем их методы, чтобы создать новый экземпляр класса.
+При этом ничего импортировать сюда не нужно, просто внутри функций вызываются экземпляры нужных нам классов
+ */
+interface CreateWatch {
+    WatchActions createWatch();
+}
+
+
+class createDigitalWatch implements CreateWatch {
+
+
+    public WatchActions createWatch() {
+        return new DigitalWatch();
+    }
+}
+
+class createRomeWatch implements CreateWatch {
+
+    @Override
+    public WatchActions createWatch() {
+        return new RomeWatch();
+    }
+}
+
+
+
+
+
+Сложный пример:
+class TestDrive {
+    public static void main(String[] args) throws InterruptedException {
+        LaptopStore laptopStore = new LaptopStore();
+
+        Laptop laptop13 = laptopStore.orderLaptop("13 inch");
+        Laptop laptop15 = laptopStore.orderLaptop("15 inch");
+        Laptop laptop17 = laptopStore.orderLaptop("17 inch");
+
+        System.out.println("Available laptops in the store:");
+        System.out.println(laptop13);
+        System.out.println(laptop15);
+        System.out.println(laptop17);
+    }
+}
+
+abstract class LaptopFactory {
+
+    abstract Laptop createLaptop(String type);
+
+    Laptop orderLaptop(String type) throws InterruptedException {
+        Laptop laptop = createLaptop(type);
+        if (laptop == null) {
+            System.out.println("Sorry, we are not able to create this kind of laptop\n");
+            return null;
+        }
+        System.out.println("Making a " + laptop.getName());
+        laptop.attachKeyboard();
+        laptop.attachTrackpad();
+        laptop.attachDisplay();
+        Thread.sleep(1500L);
+        System.out.println("Done a " + laptop.getName() + "\n");
+        return laptop;
+    }
+}
+
+class LaptopStore extends LaptopFactory {
+    @Override
+    Laptop createLaptop(String type) {
+        switch (type) {
+            case "13 inch":
+                return new Laptop13("13 inch Laptop");
+            case "15 inch":
+                return new Laptop15("15 inch Laptop");
+            case "17 inch":
+                return new Laptop17("17 inch Laptop");
+            default:
+                return null;
+        }
+    }
+}
+
+class Laptop {
+    private String name;
+
+    Laptop(String name) {
+        this.name = name;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    void attachKeyboard() {
+        System.out.println("Attaching keyboard");
+    }
+
+    void attachTrackpad() {
+        System.out.println("Attaching trackpad");
+    }
+
+    void attachDisplay() {
+        System.out.println("Attaching display");
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+
+class Laptop13 extends Laptop {
+    Laptop13(String name) {
+        super(name);
+    }
+}
+
+class Laptop15 extends Laptop {
+    Laptop15(String name) {
+        super(name);
+    }
+}
+
+class Laptop17 extends Laptop {
+    Laptop17(String name) {
+        super(name);
+    }
+}
+
+

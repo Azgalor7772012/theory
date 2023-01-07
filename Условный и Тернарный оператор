@@ -1,0 +1,23 @@
+Условный оператор, почти как в питоне :
+
+if(условие){
+    блок кода, что делать
+    } else if(условие) {
+        блок кода, что делать
+    } else {
+        блок кода
+    }
+
+Тернарный оператор - оператор, который оценивает условие и выбирает один
+из двух вариантов выполнения. Проще говоря, это оператор if в одну строчку.
+Синтаксис следующий:
+
+result = condition ? trueCase : elseCase;
+Включает в себя 2 специальных символа ? и :
+
+например:
+int max = a > b ? a : b;
+int size = someString != null ? someString.length() : 0; // if the string is empty, the size is 0
+
+int num = ...;  // it's initialized by a value
+System.out.println(num % 2 == 0 ? "even" : "odd");

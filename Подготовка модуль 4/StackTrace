@@ -1,0 +1,22 @@
+StackTrace - отчет о действующих кадрах стека в определенный момент времени.
+LIFO
+
+String getClassName() - Возвращает имя класса.
+String getMethodName() - Возвращает имя метода.
+String getFileName() - Возвращает имя файла (в одном файле может быть много классов).
+String getModuleName() - Возвращает имя модуля (может быть null).
+String getModuleVersion() - Возвращает версию модуля (может быть null).
+int getLineNumber() - Возвращает номер строки в файле, в которой был вызов метода.
+
+ЗАДАЧА ПО НЕМУ
+public static String getCallerClassAndMethodName() {
+    StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();//Массив стектрейса текущего с помощью метода
+    if (stackTrace.length < 4) {
+        return null;
+    } else {
+        return stackTrace[3].getClassName() + "#" + stackTrace[3].getMethodName();
+    }
+}
+
+StackTrace:
+https://javarush.ru/groups/posts/2972-stack-trace-i-s-chem-ego-edjat

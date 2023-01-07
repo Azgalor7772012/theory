@@ -1,0 +1,57 @@
+-->Можно использовать объект класса в качестве аргумента метода, при этом мы просто вызываем объект класса
+с его аргументами в этот метод и можем там вызывать все методы класса этого объекта и сравнивать его с чем-то
+или изменять и т.д
+
+//Класс Main с экземплярами класса Box
+public class Main {
+    public static void main(String[] args) {
+       Box box = new Box(10,20,30);
+       Box box1 = new Box(20,30,40);
+       box1.compare(box);
+       Box box2 = box.createBox(box1);
+       System.out.println(box2.volume());
+       box2.compare(box);
+       Box box3 = new Box(box, box1);
+       System.out.println(box3.height + " " + box3.length + " " + box3.width);
+    }
+
+}
+
+//Сам созданный класс с его конструкторами и методами:
+
+public class Box {
+    int width;
+    int length;
+    int height;
+
+    Box(int width, int length, int height){
+        this.width = width;
+        this.length = length;
+        this.height = height;
+    }
+
+    Box (Box box1, Box box2) {
+        this.width = box1.width + box2.width + 10;
+        this.length = box1.length + box2.length + 10;
+        this.height = box1.height + box2.height + 10;
+    }
+    Box createBox (Box box) {
+        return new Box(this.width + box.width, this.length + box.length, this.height + box.height);
+
+    }
+    int volume() {
+        return this.height * this.width * this.length;
+    }
+
+    void compare(Box box) {
+        int thisVolume = volume();
+        int boxVolume = box.volume();
+        if (thisVolume > boxVolume) {
+            System.out.println("our box is larger");
+        } else if (thisVolume < boxVolume) {
+            System.out.println("our box is smaller");
+        } else {
+            System.out.println("The same");
+        }
+    }
+}

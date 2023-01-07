@@ -1,0 +1,80 @@
+->Queue - коллекция с ограниченным доступом к элементам. Элементы вставляются в конец и удаляются с начала.
+Эта коллекция поддерживается правилом first-in-first-out(FIFO)
+
+ОЧЕРЕДИ ЭТО КАК МАССИВЫ, НО ПО-ДРУГОМУ. СУТЬ У НИХ ОДНА.
+
+В Java все очереди представлены Queue<E> интерфейсом. Основные реализации:
+1)LinkedList<E>
+2)ArrayDeque<E>
+3)PriorityQueue
+
+Схема наследования:
+
+Collections(интерфейс) <- Queue(Интерфейс) <- Deque(Интерфейс) <- LinkedList(класс) и ArrayDeque(Класс)
+                                |
+                            PriorityQueue(Класс)
+!!Интерфейс Queue поддерживает принцип first-in-first-out(FIFO)
+!!Интерфейс Dequeue наследуется от Queue и поддерживает также принцип last-in-first-out(LIFO)
+
+
+->Интерфейс Queue<E>расширяется Collection<E>и добавляет несколько новых методов:
+
+  1.boolean offer(E e)вставляет указанный элемент в конец очереди, если это возможно сделать немедленно, не нарушая ограничения емкости; возвращает true/ falseв зависимости от результата этой операции;
+  2.E peek()извлекает, но не удаляет ПЕРВЫЙ ЭЛЕМЕНТ этой очереди, или возвращает, null если эта очередь пуста.
+  3.E poll()извлекает и удаляет ПЕРВЫЙ ЭЛЕМЕНТ или возвращает значение, null если эта очередь пуста;
+  4.E element()извлекает, но не удаляет голову очереди; если он пуст, метод выдает NoSuchElementException;
+  5.E remove()извлекает и удаляет голову этой очереди; если он пуст, метод выдает NoSuchElementException;
+
+Пример:
+Queue<String> q = new ArrayDeque<>();
+
+q.offer("first"); // Первый вошел First-in
+q.offer("second");
+q.offer("third");
+
+System.out.println(q.peek()); // first
+System.out.println(q.peek()); // first
+System.out.println(q.poll()); // first,  // Первый вышел First-out
+
+System.out.println(q.peek()); // second
+System.out.println(q.poll()); // second
+System.out.println(q.poll()); // third
+
+System.out.println(q.isEmpty()); // true
+
+->Интерфейс Dequeue расширяет интерфейс Queue. Это значит, что к FIFO добавляется LIFO.
+Этот интерфейс имеет следующие методы:
+перед / - выбрасывает исключения, после / - возвращает null
+1)addFirst(e) / offerFirst(e) - добавляет элемент вначало
+2)removeFirst() / pollFirst() - удаляет и возвращает первый элемент
+3)getFirst() / peekFirst() - возвращает первый элемент
+4)addLast(e) / offerLast(e)  - добавляет элемент в конец очереди
+5)removeLast)() / pollLast() - удаляет  и возвращает элемент из конца очереди
+6)getLast() / peekLast() - возвращает элемент из конца очереди
+Так как LinkedList & ArrayDeque имплементируют интерфейс Dequeue, они имеют эти методы.
+
+
+-> Согласно Java документации есть класс Stack, который предоставляет возможность работать с информацией
+с помощью принципа LIFO, но интерфейс Dequeue более полный и согласованный, чем класс Stack, поэтому
+для работы с принципом LIFO принято использовать его(то есть работаем с Dequeue вместо Stack).
+НО раньше он использовался. Вот пример:
+
+Stack<String> stack = new Stack<>();
+
+stack.push("first"); // push добавляет элемент в начало списка
+stack.push("second");
+stack.push("third");
+
+System.out.println(stack); // [first, second, third]
+
+System.out.println(stack.pop()); // "third" // POP - первый элемент
+System.out.println(stack.pop()); // "second"
+System.out.println(stack.pop()); // "first"
+
+System.out.println(stack.pop()); // throws EmptyStackException
+
+--> Тезисно:
+1) Нужно работать с FIFO - используем ArrayDequeue через ссылку Queue
+2) Нужно работать с LIFO или FIFO + LIFO - используем ArrayDequeue через ссылку Dequeue
+3) Можно использовать класс LinkedList, но он считается менее эффективным с точки зрения памяти при работе с
+большим количеством элементов

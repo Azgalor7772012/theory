@@ -1,0 +1,72 @@
+public class цикл  {
+
+    public static void main(String[] args) {
+        int a = 0;
+        for( i = 0; i <= 10; i++  ){
+            System.out.println("hello");
+        }
+    }
+}
+условие имеет 3 блока:
+1)Переменная счетчик : int i = 0
+2)Блок условие - for работает до тех пор, пока выполняется условие
+3)Блок изменения счетчика  ( i += 1 == i++)
+
+В условии можно пропускать блоки, например:
+
+Можно объявить переменную вне цикла:
+int i = 10;
+for (; i > 0; i--) {
+    System.out.print(i + " ");
+}
+При этом, если мы объявляем и инициализируем значение переменной вне цикла,
+то снова написав ее в цикле, джава не скомпилирует код
+
+Более того, также можно написать бесконечный цикл вообще без этих частей:
+for (;;) {
+    // do something
+}
+
+
+
+
+--> Использование цикла for/ for-each для массивов:
+
+1.for-each используется для перебора каждого элемента массива, строки или коллекции
+Вот как это выглядит:
+for (type var : array) {
+    //statements using var
+}
+А вот как это можно прочитать: для каждого элемента var типа type в array массиве сделать {несколько операторов в теле }.
+type указывает тип переменной, в которой будет храниться один элемент массива на каждой итерации. Обычно этот тип равен
+типу элементов, хранящихся в массиве. var это имя этой переменной. Вы можете выбрать любое имя, которое вы предпочитаете
+
+Следующая программа проверяет, отсортирован ли данный массив в порядке возрастания, и печатает «ОК», если ответ положительный, в противном случае печатает «СЛОМАН».
+
+int[] numbers = { 1, 2, 3, 4, 5, 10, 6 }; // the order is broken
+boolean broken = false; // suppose the array is well-ordered
+/* iterating over the array */
+for (int i = 1; i < numbers.length; i++) {
+    if (numbers[i] < numbers[i - 1]) { // if the order is broken
+        broken = true; // write a result
+        break;         // terminate the loop
+    }
+}
+
+if (broken) {
+    System.out.println("BROKEN");
+} else {
+    System.out.println("OK");
+}
+
+Заполняем массив данными из консоли:
+Scanner scanner = new Scanner(System.in);
+
+int len = scanner.nextInt(); // reading a length
+int[] array = new int[len];  // creating an array with the specified length
+
+for (int i = 0; i < len; i++) {
+    array[i] = scanner.nextInt(); // read the next number of the array
+}
+
+System.out.println(Arrays.toString(array)); // output the array

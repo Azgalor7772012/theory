@@ -1,0 +1,79 @@
+public class Car implements Comparable<Car> {
+
+    private int number;
+    private String model;
+    private String color;
+    private int weight;
+
+    // constructor
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public Car(int number, String model, String color, int weight) {
+        this.number = number;
+        this.model = model;
+        this.color = color;
+        this.weight = weight;
+    }
+
+    // getters, setters
+    public void getNumber(int number) {
+        this.number = number;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "number=" + number +
+                ", model='" + model + '\'' +
+                ", color='" + color + '\'' +
+                ", weight=" + weight +
+                '}';
+    }
+
+    // Переназначенный метод compareTo. Если метод возвращает -1, то мы будем видеть объект левее другого объекта, если
+    +1, правее, если == не изменится место. Здесь мы говорим, что если Вес машины больше, то поставь объект правее.
+    То есть сортируем от большего веса к меньшему(слева направо)
+    @Override
+    public int compareTo(Car otherCar) {
+        1 способ:
+        Здесь мы сортируем по весу, можем сортировать и по чему-либо другому из листа
+        if (this.weight < otherCar.getWeight()) {
+            return -1;
+        } else if (this.weight == otherCar.getWeight()) {
+            return 0;
+        } else {
+            return 1;
+        }
+        2 способ:
+        Точно того же самого мы добьемся записью:
+        return this.weight - otherCar.getWeight();
+
+        // 3 Способ. Внутри стандартных классов уже прописан интерфейс compareTo, поэтому можем делать так:
+        Integer weight = this.weight;
+        Integer secondWeight = otherCar.weight;
+        return weight.compareTo(secondWeight);
+        Как видим стандартные классы это оболочки примитивных типов, поэтому их придется перевести в класс-оболочку
+
+        Если у нас 2 значения одинаковые и нам все равно нужно отсортировать хотя бы по-другому типу данных:
+        int res = this.weight - otherCar.getWeight();
+        if (res == 0) {
+        res = this.getColor().compareTo(otherCar.getColor())
+        }
+    }
+
+}

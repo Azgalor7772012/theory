@@ -1,0 +1,133 @@
+-->Методы в Java позволяют выполнять блок кода просто написав имя метода, очень
+похоже на функцию в питоне. По сути это и есть функция, просто называется методом.
+
+-->Синтаксис метода следующий:
+public static int countSeeds (int parrotWeight, int parrotAge) {
+    return parrotWeight / 5 + parrotAge;
+    }
+-->Здесь:
+1)public static - модификатор (modifier)
+2)int - тип возвращаемой переменной
+3)countSeeds - имя метода, по которому мы будем его вызывать
+4)int parrotWeight, int parrotAge - параметры, которые нужно будет дать методу вместе с обозначением типа переменной
+через запятую
+method signature - комбинация имени метода и листа параметров
+
+-->Модификаторы:
+В Java есть 2 вида модификаторов:
+access modififiers / non-access modifiers :
+
+access modififiers обозначает видимость методы. У нас здесь public.
+public - обозначает, что этот метод можно вызвать даже из других классов.
+
+non-access modifiers предоставляет инфу для JVM о поведение методов.
+static - обозначает, что метод принадлежит классу и к нему можно получить доступ
+без создания экземпляра класса
+
+Если метод объявляет без static modifier, это значит, что метод может быть
+вызван только через или с объектом или экземпляром этого класса.
+Такие методы называются instance methods
+
+-->Прежде чем метод завершает свое выполнение и завершает работу, он возвращает
+значение, известное как возвращаемое значение (как в питоне):
+public static int countSeeds(int parrotWeight, int parrotAge) {
+    return parrotWeight / 5 + parrotAge; // it returns an int
+}
+
+-->При этом если мы не хотим, чтобы метод что-то возвращал, а просто хотим, чтобы
+он выполнил свой код, то используется ключевое слово void:
+
+public static void countSeeds(int parrotWeight, int parrotAge) {
+    System.out.println("give your parrot " + (parrotWeight / 5 + parrotAge) +
+    "g of seeds per day");
+}
+// this method just prints the line, so it returns no value
+
+При этом при попытке вернуть тип данных, мы получим ошибку компиляции
+
+Хотя метод с ключевым словом void ничего не возвращает, мы все еще можем использовать
+return для выхода из метода, обычно это методы с условиями:
+public static void isPositive(int num) {
+    if (num > 0) {
+        System.out.println("the number is positive");
+    } else {
+        return;
+    }
+}
+
+-->Когда вы передаете методу переменную примитивного типа, создается копия
+этой переменной с тем же значением. Внутри метода обрабатывается только
+эта копия. Любые изменения в этой копии не повлияют на переданную переменную.
+
+public static void main(String[] args) {
+    int portion = 100;
+    addSeeds(portion); // try to change portion
+
+    // now let's print a portion
+    System.out.println(portion);
+    // 100, because the method didn't change portion, only its copy
+}
+/**
+ * The method increases the portion of seeds by 50
+ * and prints the resulting value
+ */
+public static void addSeeds(int portion) {
+    portion += 50;
+    System.out.println("The increased portion is " + portion);
+}
+// The increased portion is 150
+   100
+
+--> Передача массива методу:
+Метод может иметь параметры любых типов, включая массивы, строки,примитивные типы
+и так далее. Например метод принимает массив с данными типа int:
+public static void processArray(int[] array) { /* do something */ }
+Причем не обязательно указывать размерность массива.
+В теле метода мы можем обрабатывать входной массив любым способом. Считай, что у нас
+он просто есть в теле метода.
+
+!При этом массив является ссылочным типом, то есть мы даем в качестве аргумента ссылку, но
+изменения в массиве, которые мы сделаем внутри метода будут видны и вне метода, мы просто изменим
+массив, который был подан нам в метод.
+
+Как это использовать:
+public static void swapFirstAndLastElements(int[] nums) { // nums is an array
+    if (nums.length < 1) {
+        return; // it returns nothing, i.e. just exits the method
+    }
+    int temp = nums[nums.length - 1]; // save the last element in a temporary local variable
+    nums[nums.length - 1] = nums[0];  // now, the last element becomes the first
+    nums[0] = temp;                   // now, the former first element becomes the last
+}
+
+Вызов метода из основного метода:
+public static void main(String[] args) {
+
+    int[] numbers = { 1, 2, 3, 4, 5 }; // numbers
+    System.out.println(Arrays.toString(numbers)); // before swapping
+    swapFirstAndLastElements(numbers); // swapping
+    System.out.println(Arrays.toString(numbers)); // after swapping
+}
+Результат:
+[1, 2, 3, 4, 5]
+[5, 2, 3, 4, 1]
+
+--> Также в метод можно передать произвольное количество аргументов одного типа
+используя специальный синтаксис varargs(variable-length arguments). Причем, если
+в методе используется несколько аргументов, то varargs должен стоять на последнем
+месте.
+
+В аргументах указывается тип данных и после ставятся 3 точки. Теперь в метод можно
+передавать несколько данных одного типа и делать что-то с ними, то есть обработать их как обычный массив
+данных:
+
+public static void printNumberOfArguments(int... numbers) {
+    System.out.println(numbers.length);
+}
+
+printNumberOfArguments(1);
+printNumberOfArguments(1, 2);
+printNumberOfArguments(1, 2, 3);
+printNumberOfArguments(new int[] { }); // no arguments here
+printNumberOfArguments(new int[] { 1, 2 });
+

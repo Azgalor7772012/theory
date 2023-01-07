@@ -1,0 +1,32 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Test {
+    public static void main(String[] args) {
+        StringBuilder string = new StringBuilder();
+        String init = "Hello";
+        for (int i = init.length() - 1; i >= 0; i--) {
+            string.append(init.charAt(i));
+        }
+        System.out.println(string.toString());
+        List<String> list = new ArrayList<>();
+        list.add("hello");
+        list.add("aboba");
+        list.add("baboba");
+        //Просто сравниили и отсортировали стандартные классы.
+        Collections.sort(list);
+        System.out.println(list);
+        // Если сейчас мы отсортируем собственный массив, то получим ошибку компиляции, нужно сначала в наш класс
+        добавить интерфейс Comparable
+        //Добавили
+        List<Car> arrWithCars = new ArrayList<>();
+        Car firstCar = new Car(1, "Tesla", "white", 100);
+        Car secondCar = new Car(2, "Ford", "Black", 110);
+        arrWithCars.add(firstCar);
+        arrWithCars.add(secondCar);
+        System.out.println(arrWithCars);
+        Collections.sort(arrWithCars);
+        System.out.println(arrWithCars);
+    }
+}

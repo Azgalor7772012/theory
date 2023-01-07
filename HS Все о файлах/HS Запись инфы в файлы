@@ -1,0 +1,56 @@
+Есть много способов, но  два самых простых способа: использование классов :
+1) java.io.FileWriter
+2) java.io.PrintWriter
+Эти классы расширяют абстрактный класс Writer.
+
+Примеры:
+-->Класс FileWriter:
+
+Класс FileWriter имеет набор конструкторов для записи символов и строк в указанный файл:
+
+FileWriter(String fileName);
+FileWriter(String fileName, boolean append);
+FileWriter(File file);
+FileWriter(File file, boolean append);
+
+Аргументом можно указать либо путь к файлу, либо объект класса File.
+Два конструктора принимают дополнительный параметр append, указывающий, следует ли добавить (true) или перезаписать
+(false) существующий файл.
+
+Пример:
+File file = new File("/home/username/path/to/your/file.txt");
+FileWriter writer = new FileWriter(file); // Перезаписываем файл
+
+writer.write("Hello");
+writer.write("Java");
+writer.close(); // БЕЗ ЗАКРЫТИЯ FileWriter НЕ БУДЕТ ВЫПОЛНЯТЬ УКАЗАННЫЕ В ПРОГРАММЕ ДЕЙСТВИЯ.
+
+Если указанный файл не существует, он будет создан после выполнения этого кода. Если файл уже существует, этот код перезаписывает данные.
+Файл будет содержать текст HelloJava .
+
+
+Если мы хотим добавить некоторые новые данные, мы должны указать второй аргумент как true.
+
+File file = new File("/home/username/path/to/your/file.txt");
+FileWriter writer = new FileWriter(file, true); // Добавляет текст в файл
+
+writer.write("Hello, World\n");
+writer.close(); // Нужно закрывать
+Этот код добавляет новую строку в файл
+
+--> Класс PrintWriter, как по мне, намного удобнее.
+Ниже его методы в цикле try-with-resources, из-за которого не нужно использовать метод закрывания.
+
+File file = new File("C:\\Users\\Admin\\Desktop\\dataset_91007.txt");
+try (PrintWriter printWriter = new PrintWriter(file)) {
+    printWriter.print("Hello"); // Печатает строку
+    printWriter.println("Java"); // Печатает строку и переходит на след.строку
+    printWriter.println(123); // печатает число
+    printWriter.printf("You have %d %s", 400, "gold coins"); // Печатает отформатированную строку
+} catch (IOException e) {
+    System.out.printf("An exception occurred %s", e.getMessage());
+}
+
+У класса 2 конструктора:
+PrintWriter(String fileName); - принимает путь к файлу
+PrintWriter(File file). - принимает объект класса File

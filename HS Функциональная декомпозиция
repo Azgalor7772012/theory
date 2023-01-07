@@ -1,0 +1,32 @@
+Функциональная декомпозиция(functional decomposition) - подход к разделению
+сложной программы на подпрограммы
+
+Этот подход имеет много преимуществ. Это помогает нам:
+
+1.структурировать код;
+2.следовать общей логике программы;
+3.легко вносить изменения;
+4.тестировать отдельные методы.
+
+Принцип таков - создаем отдельные методы, чаще всего они создаются так :
+1. public static void funcName() { }
+2. public static int(type) funcName(list of variables) { }
+После все методы засовываем в метод main, с которого начинается выполнение программы
+При этом одни методы могут использоваться в других. Например:
+
+// method that controls electric kettle
+public static void controlKettle() {
+    // ...
+}
+
+// method with the main menu for choosing the action
+public static void chooseAction() {
+    Scanner scanner = new Scanner(System.in);
+// adding case 4
+    System.out.println("Choose the object: 1 – speakers, 2 – lamp, 3 – door, 4 – kettle");
+    // ...
+        case 4:
+            controlKettle(); // В этом методе используется другой метод
+            break;
+    // ...
+    }

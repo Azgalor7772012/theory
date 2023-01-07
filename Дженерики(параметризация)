@@ -1,0 +1,32 @@
+Дженерики позволют параметризировать объекты. Например на примере ниже, мы создали динамический
+массив(сам меняет величину при необходимости) с одним типом переменных String.
+
+public class Jenerics {
+    public static void main(String[] args) {
+        // До дженериков
+        List animals = new ArrayList();
+        // Динамический массив, в который мы можем добавлять элементы любых типов
+        animals.add("Hello");
+        animals.add(25);
+        animals.add('C');
+        String w = (String) animals.get(0); //Применяется DownCast(понижаем с типа Object на тип String)
+        System.out.println(w);
+        int x = (int) animals.get(1);
+        System.out.println(x);
+
+
+        // После появления Дженериков
+
+        /*Динамический массив, но добавлять можно только элементы типов, указанных в <>
+        То есть мы параметреризировали наш массив
+        * */
+        List<String> animals2 = new ArrayList<>();
+        animals2.add("Hello");
+        animals2.add("Vanya");
+        animals2.add("etc");
+        String w2 = animals2.get(0); // DownCast не применяется, т.к ничего кроме String в массиве быть не может
+    }
+
+
+
+}

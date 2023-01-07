@@ -1,0 +1,55 @@
+Есть 2 метода сложного форматирования строк:
+1)System.out.printf();
+2)String.format();
+
+--> 1 метод:
+У первого метода есть 2 аттрибута:
+1. Сама строка, которую мы хотим отформатировать и через запятую элементы,
+которые мы хотим подставить за место спецификаторов формата.
+В строке должны быть спецификаторы формата, такие как :
+%d - если мы хотим за место него подставить целое число
+%s - если мы хотим за место него подставить строку
+%f - если мы хотим за место него подставить число с плавающей запятой.
+При этом мы можем использовать формат %.2f - в данном случае мы говорим
+записать 2 буквы после запятой у числа float
+%c - если мы хотим за место него подставить символ
+
+
+Примеры:
+1.public static void main(String[] args){
+   System.out.printf("My Name is %s. I was born in %d", "Mike", 1998);
+    System.out.printf("The sum of %d and %d is %d", 15, 40, 55);
+}
+
+2.public static void main(String[] args){
+    System.out.printf("Display a Number %.2f", 15.23); // Display a Number 15.23
+}
+
+3.public static void main(String[] args){
+    char abbr = 'H';
+    String element = "Hydrogen";
+    System.out.printf("%c stands for %s", abbr, element);
+}
+
+--> 2 метод:
+Метод format() в String классе работает очень похоже на printf() метод. Основное
+отличие здесь в том, что вы возвращаете строку, а не печатаете ее. Все спецификаторы
+формата здесь такие же, как и у первого метода.
+
+Выглядит он так же, только мы текст форматированный заносим в переменную, а не сразу печатаем:
+public static void main(String[] args){
+    int age = 22;
+    char initial = 'M';
+    String surname = "Anderson";
+    double height = 1.72;
+
+    String details = String.format(
+            "My name is %c. %s.%nMy age is %d.%nMy height is %.2f.",
+            initial, surname, age, height);
+    System.out.println(details); Для этого метода используется %n в качестве символа переноса строки, а
+    не \n
+}
+
+У String класса также есть более новый и немного более простой метод formatted(Object... args):
+String details = "My name is %c. %s.%nMy age is %d.%nMy height is %.2f."
+            .formatted(initial, surname, age, height);

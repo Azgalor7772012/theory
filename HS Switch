@@ -1,0 +1,54 @@
+-->Метод switch работает как цикл if, но в случаях когда у переменной есть конкретное
+значение. То есть оператор Switch позволяет избежать нагромождение кода
+конструкциями if-else.
+
+-->Также очень важным компонентом Switch является ключевое слово break. Если
+Мы не будем в каждом кейсе писать break, то после совпадения кейса, мы
+получим и все команды кейсов ниже.
+
+-->Вид метода switch выглядит след.образом :
+switch (variable) {
+    case value1:
+        // do something here
+        break;
+    case value2:
+        // do something here
+        break;
+
+    //... other cases
+
+    case valueN:
+        // do something here
+        break;
+    default:
+        // do something by default
+        break; // Можно не писать break в default
+}
+
+например:
+int val = ...;
+switch (val) {
+     case 0:
+         System.out.println("zero");
+         break;
+     case 1:
+         System.out.println("one");
+         break;
+     case 2:
+         System.out.println("two");
+         break;
+     default:
+         System.out.println("The value is less than zero or greater than two");
+}
+
+-->На данный момент есть интерфейс метода Switch намного проще:
+switch(value) {
+case "1" -> System.out.print("1");
+case 2 -> System.out.print("2");
+...
+}
+
+-->Также внутрь в case цикла switch можно писать еще один switch, но так делать
+не рекомендуется
+
+

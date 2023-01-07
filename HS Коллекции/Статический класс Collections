@@ -1,0 +1,22 @@
+Collections - класс для упрощения работы с коллекциями, его методы позволяют выполнять простые действия
+над коллекциями.
+
+Методы:
+Все методы пишутся как Collections.method(args)
+1)sort(collection) - сортирует элементы в коллекции
+2)swap(collection, collection.indexOf(elem1), collection.indexOf(elem2)) - меняет местами 2 элемента
+3)reverse(collection) - реверсирует коллекцию сзада на перед
+4)disjoint(collection1, collection2) - возвращает true/false если в коллекциях есть/нет одинаковых эл-в
+5)min(collection) - возвращает минимальный элемент коллекции
+6)max(collection) - возвращает максимальный элемент коллекции
+7)shuffle(collection) - рандомно перемешивает элементы в коллекции
+
+
+Collections.unmodifialbeList(list) - возвращает неизменяемый список,при это возвращает объект типа List
+Collections.unmodifiableSet(set);
+Collections.unmodifiableMap(map);
+
+
+Collections.synchronizedList(list)
+Collections.synchronizedSet(set)  - Все 3 метода делают из несинхронизараванной коллекции синхронизированную(то есть потокобезопасную)
+Collections.synchronizedMap(map)

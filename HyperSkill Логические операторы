@@ -1,0 +1,42 @@
+Логических операторов в Java 4:
+
+1) not - обозначается как ! :
+boolean f = false; // f is false
+boolean t = !f;    // t is true
+
+2) and - обозначается как && :
+boolean b1 = false && false; // false
+boolean b2 = false && true;  // false
+boolean b3 = true && false;  // false
+boolean b4 = true && true;   // true
+
+3) or - обозначается как || :
+boolean b1 = false || false; // false
+boolean b2 = false || true;  // true
+boolean b3 = true || false;  // true
+boolean b4 = true || true;   // true
+
+4)XOR ( исключающее ИЛИ ) — это бинарный оператор, который возвращает
+значение, true если логические операнды имеют разные значения, в
+противном случае он возвращает значение false. Обозначается как ^ :
+boolean b1 = false ^ false; // false
+boolean b2 = false ^ true;  // true
+boolean b3 = true ^ false;  // true
+boolean b4 = true ^ true;   // false
+
+-->Приоритет операторов сверху вниз:
+1. !(not)
+2. ^(xor)
+3.&&(and)  = конъюнкция
+4.||(or)   = дизъюнкция
+
+--> Реляционные операторы(> , >=, <, <=) имеют более высокий приоритет, чем логические операторы:
+number > 100 && number < 200; - Правильно
+(number > 100) && (number < 200); - Неправильно
+&& и || могут оценивать только один из операндов для сокращения работы,
+это называется короткое замыкание(short-circuit evaluation):
+
+false && ...-> false, так как нет необходимости знать, что такое правая
+часть;
+true || ...-> true, так как нет необходимости знать, что такое правая
+часть.

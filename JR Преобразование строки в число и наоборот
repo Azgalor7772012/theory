@@ -1,0 +1,43 @@
+-->Для преобразования строки в числовое значение необходимого типа, нужно воспользоваться классом оберткой:
+
+byte a = Byte.parseByte("42");
+short b = Short.parseShort("42");
+int c = Integer.parseInt("42");
+long d = Long.parseLong("42");
+float e = Float.parseFloat("42.0");
+double f = Double.parseDouble("42.0");
+Самый популярный конечно же Integer.parseInt(42);
+
+-->Но при использовании метода Integer.parseInt() нужно помнить о некоторых нюансах:
+
+1.Если в метод передать строку, которая не является целочисленным значением, будет получена
+ошибка java.lang.NumberFormatException, которая будет сообщать, что полученная строка
+не является целочисленным значением.
+
+2.NumberFormatException произойдет и в том случае, если переданная строка будет содержать пробел.
+
+3.parseInt() — может работать с отрицательными числами. Для этого строка должна начинаться с символа “-”.
+
+4.parseInt() — не может распарсить строку, если числовое значение выходит за пределы типы
+int (-2147483648 .. 2147483647).
+
+--> Преобразование числа в строку
+1. Преобразование int to String в Java:
+       int i = 53;
+       String str = Integer.toString(i);
+       System.out.println(str);
+
+    2. Преобразование double to String в Java:
+       double  i = 31.6e10;
+       String str = Double.toString(i);
+       System.out.println(str);
+
+    3. Преобразуем long to String в Java:
+       long  i = 3422222;
+       String str = Long.toString(i);
+       System.out.println(str);
+
+    4. Преобразуем float to String в Java:
+       float  i = 3.98f;
+       String str = Float.toString(i);
+       System.out.println(str);

@@ -1,0 +1,58 @@
+-->Если говорить о исключениях ссылочных типов данных, то здесь самая распространенная:
+NullPointerException(NPE). - Значение null может быть присвоено только ссылочному типу данных, нельзя
+присвоить значение null примитиву (int b = null НЕЛЬЗЯ)
+
+Она происходит, когда программа пытается использовать переменную со значением null. Например:
+
+String someString = null; // a reference type can be null
+int size = someString.length(); // NullPointerException (NPE)
+
+-->Чтобы избежать NPE можно использовать проверку с помощью тернарных или условных операторов. Мы проверяем
+равна ли ссылка переменной null или нет:
+1. if (string == null) {
+               System.out.println("NPE!");
+
+2. int size = someString != null ? someString.length() : 0; // if the string is empty, the size is 0
+
+
+-->Очень распространенная ситуация возникает, когда мы пытаемся сравнить String переменную и строковый
+литерал:
+
+String str = null;
+if (str.equals("abc")) { // it throws an NPE
+    System.out.println("The same");
+}
+Чтобы избежать здесь NPE , мы можем использовать нотацию Yoda и вызывать метод equals для литерала, а не
+для объекта:
+
+String str = null;
+if ("abc".equals(str)) { // no NPE here
+    System.out.println("The same");
+}
+
+--> java.util.objects; (Objects.equals(obj1, obj2);
+Если у нас есть две переменные типа String? Любой из них может оказаться null. В этом случае мы можем
+использовать специальный вспомогательный класс java.util.Objects.
+
+String s1 = null;
+String s2 = null;
+if (Objects.equals(s1, s2)) { // no NPE here
+    System.out.println("Strings are the same");
+}
+
+-->Также если мы будем пытаться распечатать строку с ссылкой на null, то ошибки NPE не возникнет, мы
+распечатаем null.
+
+--> Правила избегания NPE:
+1.Для ссылочных типов используйте условный оператор, чтобы проверить, является ли данная переменная null
+перед ее использованием;
+2.По возможности старайтесь избегать присваивания значения null переменным;
+3.Использовать NPE-безопасные функции из стандартной библиотеки (java.util.objects(Objects.equals(obj1, obj2);)
+
+
+-->Второе по распространенности исключение - StringIndexOutOfBoundsException:
+Возникает если мы пытаемся взять char из строки по индексу:
+str.charAt(5);
+
+Просто проверять, что индекс находится в пределах строки с помощью методы измерения длины строки:
+string.length();

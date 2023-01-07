@@ -1,0 +1,4 @@
+https://quizlet.com/ru/719415037/generic-%D0%9A%D0%BE%D0%BB%D0%BB%D0%B5%D0%BA%D1%86%D0%B8%D0%B8-java-core-flash-cards/
+Ковариантность и контрвариантность:
+    Ковариантность: List<Integer> можно присвоить в переменную типа List<? extends Number> (как будто он наследник List<Number>).
+    Контравариантность: в качестве параметра метода List<Number>#sort типа Comparator<? super Number> может быть передан Comparator<Object> (как будто он родитель Comparator<Number>)

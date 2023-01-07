@@ -1,0 +1,10 @@
+public class Цикл  {
+
+    public static void main(String[] args) {
+        int a = 0;
+        while(условия a>5){
+            System.out.print(a);
+            a += 1;
+        }
+    }
+}

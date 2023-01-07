@@ -1,0 +1,34 @@
+Статические поля - поля, имеющие одно и то же значение для всех экземпляров класса;
+Изменяя это поле в одном экземпляре, оно изменится и в другом.
+Объявляется оно так:
+class SomeClass {
+
+    public static String staticStringField;
+
+    public static int staticIntField;
+}
+
+--> Методы так же могут быть статическими, такие методы обычно называются методы класса.
+Статический метод доступен без создания экземпляра класса. Чтобы его вызвать достаточно вызвать класс и через
+точку метод: ClassName.staticMethodName(args);
+-->У static methods есть особенности:
+1)Cтатический метод может получить доступ только к статическим полям и не может получить доступ к
+нестатическим полям;
+2)Cтатический метод может вызывать другой статический метод, но не может вызывать метод экземпляра;
+3)Cтатический метод не может ссылаться на this ключевое слово, потому что в статическом контексте
+нет экземпляра.
+Однако методы экземпляра могут обращаться к статическим полям и методам.
+
+--> Единственный способ вызвать метод экземпляра из статического — предоставить ссылку на этот экземпляр
+в качестве аргумента:
+
+public static void invokeAStaticMethod(SomeClass someClassInstance) {
+
+    // calling instance method from static context by passing instance as an argument
+    someClassInstance.invokeAnInstanceMethod();
+
+    // calling instance and static methods of AnotherClass instance
+    AnotherClass anotherClassInstance = new AnotherClass();
+    anotherClassInstance.invokeAnotherClassInstanceMethod();
+    anotherClassInstance.invokeAnotherClassStaticMethod();
+}

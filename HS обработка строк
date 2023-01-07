@@ -1,0 +1,25 @@
+--> Можно выполнять преобразование между строками и массивами символов, используя специальные методы,
+такие как valueOf()и toCharArray().
+
+1. Метод String.valueOf(list) - переводит из массива в строку (Массив -> Строка):
+char[] chars = { 'A', 'B', 'C', 'D', 'E', 'F' };
+String stringFromChars = String.valueOf(chars); // "ABCDEF"
+
+2. Метод String.toCharArray() - переводит из строки в массив символом(Строка -> Массив символов):
+String word = "Hello";
+char[] chars = word.toCharArray();
+
+3. Создания нового объекта строки из массива char:
+char[] chars = { 'A', 'B', 'C', 'D', 'E', 'F' };
+String theSameString = new String(chars); // "ABCDEF"
+
+-->Разделение строки:
+Разделение строки происходит с помощью метода String.split("Symbol of split").При этом сам разделительный
+символ удаляется.
+Пример:
+String sentence = "a long text";
+String[] words = sentence.split(" "); // {"a", "long", "text"}
+
+Можно выбрать любой предпочитаемый разделитель, включая комбинацию пробелов и слов:
+String text = "I'm gonna be a programmer";
+String[] parts = text.split(" gonna be "); // {"I'm", "a programmer"}

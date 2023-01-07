@@ -1,0 +1,16 @@
+Supplier<T> - поставщик
+Имеет только один метод - T get();
+
+Пример:
+
+public static List<Car> createThreeCars(Supplier<Car> carSupplier) {
+        List<Car> arr = new ArrayList<>();
+
+        for (int i = 0; i < 3; i++) {
+            arr.add(carSupplier.get());
+        }
+        return arr;
+}
+
+List<Car> ourCars =  createThreeCars( ()//Пустые скобки т.к метод интерфейса не принимает ничего в качестве аргумента ->
+                new Car("Nissan", "black", 230));//Одна машина, т.к у нас метод вызывается в цикле, то добавятся 3 одинаковых машины

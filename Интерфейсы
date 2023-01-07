@@ -1,0 +1,116 @@
+-->Интерфейс — это особый вид класса, из которого не может быть сделан объект. Основная
+идея интерфейса — декларировать функциональность. Интерфейсы помогают абстрагироваться от
+конкретных классов и подчеркивают функциональность.
+
+-->Создание интерфейса происходит как создание класса, только вместо класса выбираем интерфейс.
+
+У методов интерфейса не может быть тела. Тело методов интерфейса должно быть прописано в классах, которые
+имплементируют(реализуют) интерфейсы. То есть интерфейс не создает реализацию, интерфейс создает каркас.
+
+-->Чтобы приделать интерфейс к классам после имени класса пишется 'implements nameOfInterface':
+public class Person implements Info { }
+
+Теперь наш класс обязан реализовывать все методы, которые прописаны в интерфейсе Info.
+То есть мы как бы обязываем этот класс иметь методы с ТОЙ ЖЕ СИГНАТУРОЙ, что и в интерфейсе, то есть интер-
+фейс служит гарантом, что в этом классе будут нужные нам методы.(Сигнатура метода - название метода +
+его параметры)
+
+--> При этом класс может реализовывать любое количество интерфейсов, их можно записывать через запятую:
+public class Person implements Info,interfaceDog,interfaceCat { }
+
+--> Если один интерфейс расширяет другой, то используется ключевое слово extends вместо implements.
+
+
+--> Если мы автоматически вызовем в классе с интерфейсом метод, прописанный в интерфейсе мы увидем строчку
+@override перед этим методом. Конкретно с интерфейсом эта строчка значит, что метод должен быть такого же
+названия, как и в интерфейсе.
+Но вообще строчка @override значит, что мы переписываем тело метода, который уже был
+до этого в классе - родителе.
+
+Например:
+package xo.view;
+public class View {
+    String name = "It is a view.";
+
+    public void show() {
+        System.out.println("Метод класса View.");
+    }
+}
+package xo.view;
+public class SecondView extends View {
+    String name = "It is a secondView.";
+
+    @Override
+    public void show() {
+        System.out.println("Сообщение из класса SecondView.");
+    }
+}
+
+Как видно здесь в классе родителе View есть метод show() и в дочернем классе SecondView есть метод show().
+Здесь дочерний класс переопределяет уже имеющийся метод класса-родителя. То есть в образце дочернего класса
+этот метод будет работать по-другому. Поэтому здесь пишется аннотация @Override, чтобы показать переопределение
+метода.
+
+--Интерфейс может содержать:
+1.общедоступные константы;
+public static final int INT_CONSTANT = 0; // it's a constant, the same as public static final int INT_FIELD = 0
+2.абстрактные методы без реализации (ключевое слово abstract здесь не требуется);
+ void instanceMethod1();
+3.default методы по умолчанию с реализацией(телом метода) (ключевое слово default обязательно т.к методы у интерфейса
+по умолчанию absract, а не default, поэтому нужно переназначить);
+  default void defaultMethod() {
+        System.out.println("Interface: default method. It can be overridden");
+    }
+4.статические методы с реализацией (ключевое слово static обязательно);
+static void staticMethod() {
+        System.out.println("Interface: static method");
+    }
+5.приватные методы с реализацией(телом метода)
+private void privateMethod() {
+        System.out.println("Interface: private methods in interfaces are acceptable but should have a body");
+    }
+То есть в интерфейсах не могут использоваться публичные методы, а default методы должны быть явно обозначены.
+interface Interface {
+
+    int INT_CONSTANT = 0; // it's a constant, the same as public static final int INT_FIELD = 0
+
+    (1)void instanceMethod1();
+
+    (1)void instanceMethod2();
+
+    (4)static void staticMethod() {
+        System.out.println("Interface: static method");
+    }
+
+    (3)default void defaultMethod() {
+        System.out.println("Interface: default method. It can be overridden");
+    }
+
+    (5)private void privateMethod() {
+        System.out.println("Interface: private methods in interfaces are acceptable but should have a body");
+    }
+}
+
+--Класс может реализовывать несколько интерфейсов:
+  interface A { }
+  interface B { }
+  interface C { }
+  Class D implements A, B, C { }
+
+--Интерфейс может расширять один или несколько других интерфейсов с помощью ключевого слова extends:
+  interface A { }
+  interface B { }
+  interface C { }
+  interface E extends A, B, C { }
+
+--Класс также может расширять другой класс и реализовывать несколько интерфейсов:
+  class A { }
+  interface B { }
+  interface C { }
+  class D extends A implements B, C { }
+
+Если мы имплементируем в класс 2 интерфейса, у которых одинаковые по сигнатеру default методы, но с разной реализацией,
+то в классе нужно будет реализовать этот метод, иначе ошибка компиляции
+
+чтобы интерфейс можно было инстанцировать при помощи лямбда-выражения - Интерфейс должен содержать
+ровно один абстрактный метод.

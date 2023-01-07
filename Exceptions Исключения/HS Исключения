@@ -1,0 +1,44 @@
+-->Все исключения считаются объектами специальных классов, организованных в иерархию классов.
+
+Иерархия классов-исключений:
+-->Базовым классом для всех исключений является java.lang.Throwable. Он представляет набор общих методов для исключений:
+1)String getMessage() - возвращает подробное строковое сообщение этого объекта исключения;
+2)Throwable getCause() - возвращает причину этого исключения или null если причина не существует или неизвестна;
+3)printStackTrace() - печатает трассировку стека в стандартный поток ошибок.
+
+-->Класс Throwable имеет два прямых подкласса: java.lang.Error и java.lang.Exception.
+-подклассы Error класса представляют низкоуровневые исключения в JVM, например: OutOfMemoryError, StackOverflowError;
+-подклассы Exception класса имеют дело с исключительными событиями внутри приложений, такими как:
+RuntimeException, IOException;
+
+Все исключения можно поделить на проверяемые и непроверяемые(Checked и unchecked).
+Проверяемыми занимается класс IOException, непроверяемыми RunTimeException
+
+-класс RuntimeException является довольно особым подклассом класса Exception. Он представляет собой так
+называемые непроверенные исключения, в том числе:
+1.ArithmeticException(Деление на 0),
+2.NumberFormatException(Ввод букв, когда ожидались только цифры)
+3.NullPointerException(вместо значение в переменной хранится null).
+
+-класс IOException:
+Если какой-то метод показывает проверенное исключение, то оно должно быть отмечено в объявлении с помощью
+ключевого слова throws, иначе код не скомпилируется:
+
+public static String readLineFromFile() throws FileNotFoundException {
+    Scanner scanner = new Scanner(new File("file.txt")); // java.io.FileNotFoundException
+    return scanner.nextLine();
+}
+
+Конструктор Scanner объявляет FileNotFoundException исключение, потому что мы предполагаем, что
+указанный файл может не существовать.
+
+--В пакете java.lang находятся 4 основные класса исключений, поэтому их не нужно импортировать:
+Throwable, Exception, RuntimeException и Error.
+НО их подклассы могут находиться в других пакетах, поэтому,например, класс FileNotFoundException(который в примере выше)
+нужно импортировать.
+
+-> При выбрасывание исключения мы можем понять где оно обычно по последней строчке в терминале:
+ NumberFormatExceptionDemo.main(NumberFormatExceptionDemo.java:9)
+ 1)имя файла NumberFormatExceptionDemo.java;
+ 2)метод main;
+ 3)строка 9.

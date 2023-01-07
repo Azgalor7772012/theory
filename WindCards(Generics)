@@ -1,0 +1,157 @@
+-->Бывает, что нам не важно какой именно тип данных использует алгоритм,тогда мы вводим понятие
+Дженерики(generic type - универсальный тип);
+Универсальные методы,интерфейсы или классы могут одинаково обрабатывать разные типы. Конкретный тип
+определяется только тогда, когда разработчик создает объект класса или вызывает метод
+
+--> Для объявления универсального типа в классе или методе, после их названия необходимо написать <> скобки
+и внутри них указать параметр с типом, например:
+class GenericType<T> { }
+GenericType имеет единственный параметр типа с именем T. Мы предполагаем, что T это «какой-то тип», и
+пишем тело класса независимо от конкретного типа.
+
+class GenericType<T> {
+
+    /**
+     * A field of "some type"
+     */
+    private T t;
+
+    /**
+     * Takes a value of "some type" and assigns it to the field
+     */
+    public GenericType(T t) {
+        this.t = t;
+    }
+
+    /**
+     * Returns a value of "some type"
+     */
+    public T get() {
+        return t;
+    }
+
+    /**
+     * Takes a value of "some type", assigns it to a field and then returns it
+     */
+    public T set(T t) {
+        this.t = t;
+        return this.t;
+    }
+}
+
+-->Класс может иметь любое количество параметров типа. Например, в следующем классе их три.
+class Three<T, U, V> {
+    T t;
+    U u;
+    V v;
+}
+-->Существует соглашение об именах, которое ограничивает выбор имени параметра типа одной заглавной буквой
+Наиболее часто используемые имена параметров типа:
+T- type
+S, U, V и т.д. – 2-й, 3-й, 4-й типы
+E– Элемент (широко используется в разных коллекциях)
+K- Key
+V- Value
+N- Number
+
+-->Чтобы создать объект универсального класса (стандартного или пользовательского), нам нужно
+указать аргумент типа после имени типа.
+
+   GenericType<Integer> obj1 = new GenericType<>(10);
+
+   GenericType<String> obj2 = new GenericType<>("abc");
+
+При этом тип универсального класса должен быть ссылочным, примитивным быть не может!
+Если класс имеет несколько параметров типа, нам нужно указать их все при создании экземпляров:
+
+GenericType<Type1, Type2, ..., TypeN> obj = new GenericType<>(...);
+
+--> Иногда объявлять тип переменной долго, тогда можно использовать var вместо типа данных:
+var obj3 = new GenericType<>("abc");
+
+
+----------------------------------------------------------
+До появления Дженериков, вместо них использовался класс Object, он позволяет за место него использовать
+любой ссылочный тип данных(то есть как Дженерики, но с другой стороны):
+class NonGenericClass {
+
+    private Object val;
+
+    public NonGenericClass(Object val) {
+        this.val = val;
+    }
+
+    public Object get() {
+        return val;
+    }
+}
+Создаем экземпляр этого класса:
+NonGenericClass instance2 = new NonGenericClass("abc");
+NonGenericClass instance2 = new NonGenericClass(12); // Тип Integer
+Использование Object класса таким образом позволяет нам повторно использовать один и тот же класс для
+хранения разных типов данных.
+
+-->НО у данного подхода есть недостаток - необходимость явного приведения типа:
+NonGenericClass instance2 = new NonGenericClass("abc");
+String str = instance2.get(); // Compile-time error: Incompatible types - НЕ ПОЛУЧАЕТСЯ БЕЗ ЯВНОГО ПРИВЕДЕНИЯ ТИПА
+String str = (String) instance2.get(); // "abc"
+Тогда если экземпляр не хранит строку  код выдает исключение:
+NonGenericClass instance3 = new NonGenericClass(123);
+String str = (String) instance3.get(); // throws java.lang.ClassCastException
+
+В этом главное преимущество Дженериков, если нет необходимости в приведение типа - мы не получим исключение.
+
+
+
+
+
+->С помощью Generics можно в динамические массивы данных присваивать переменную класса.
+Выглядит это так:
+
+public class WildCardsGenerics {
+    public static void main(String[] args) {
+        List<Animals> listOfAnimals= new ArrayList<>();
+        listOfAnimals.add(new Animals(1));
+        Animals cat = new Animals(2);
+        listOfAnimals.add(cat);
+
+        test(listOfAnimals); // Если не переназначать метод toString, то получим hashcodes объектов
+    }
+    private static void test(List<Animals> animals) {
+        for (Animals animal: animals) {
+            System.out.println(animal);
+        }
+    }
+
+При этом функция test согласно полиморфизму может принимать на вход еще и дочерние классы класса Animals, но
+при этом если мы напишем:
+
+test(listOfDogs), то нам выдаст ошибку, т.к ожидается объект с типом Animals, а мы передаем ему объекты с
+типом Dog. Тогда нам нужно использовать такую вещь, как WildCard. Выглядит это так:
+
+private static void test(List<?> animals) {
+        for (Animals animal: animals) {  // Теперь тут появляется ошибка. Т.к теперь содержимое класса List
+        мы не можем рассматривать как Animal
+            System.out.println(animal);
+        }
+}
+С помощью символа ? мы говорим, что мы можем передать объект типа лист с любым типом, но как сказано
+выше в этом случае Java не понимает какой тип данных Animals мы имеем ввиду т.к она ожидает получение на вход
+массива объектов. Для того, чтобы Java поняла, что мы хотим отдать данные типа Animal или дочерних классов,
+необходимо после ? поставить extends Animals(класс который нужен). Теперь метод будет принимать все данные
+типа Animals или типов его дочерних классов:
+
+private static void test(List<? extends Animals> animals) {
+        for (Animals animal: animals) {
+            System.out.println(animal);
+        }
+}
+При этом переберутся все элементы всех листов родительского и дочерних классов
+
+--> Ключевое слово super позволяет использовать только данные, классом выше указанного. В нашем случае класс
+Animals расширяет только класс Object, поэтому мы сможем использовать только объекты класса Object:
+private static void test(List<? super Animals> animals) {
+        for (Animals animal: animals) {
+            System.out.println(animal);
+        }
+}

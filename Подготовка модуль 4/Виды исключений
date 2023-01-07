@@ -1,0 +1,52 @@
+1)NullPointerException(NPE) - выходит, если мы пытаемся обратиться к элементу со значением Null
+2)ArrayIndexOutOfBoundsException - если пытаемся обратиться к массиву по несуществующему индексу
+3)StringIndexOutOfBoundsException - пытаемся обратиться к несуществующему символу строки
+4)java.io.FileNotFoundException(подкласс java.io.Exception)- пытаемся открыть несуществующий файл
+java.io.exception - класс, содержащий исключения связанные с вводом и выводом данных
+5)ArithmeticException - при деление на 0
+
+Исключение - объект, экземпляр какого-то класса.
+Все классы исключения наследуются от класса java.lang.Throwable, который наследуется от Object
+
+-> У класса Throwable есть следующие методы:
+1)public String .getMessage() {...} - возвращает текстовую строку с описанием проблемы. Эта та строка,
+которая передается в конструктор класса Throwable
+2)public void .printStackTrace() - печатает в стэктрейс набор ошибок
+3)public StackTraceElement[] .getStackTrace() {} - возвращает стектрейс в виде массива джава объектов.
+Каждый из которых содержит имя класса, имя метода, имя файла и номер строки
+4)public Throwable .getCause - возвращает другое исключение, явившееся причиной данного или null, если
+данное исключение является первичным, а не вызванным каким-то другим
+5)public Throwable[] .getSuppressed() - возвращает одно или более исключений, которое мы заглушили в процессе
+обработки основного исключения
+
+-->Исключения в java делятся на 3 группы
+1)java.lang.Error
+2)java.lang.Exception(checked)
+3)java.lang.RuntimeException(unchecked)
+Иерархия исключений в Java:
+               Error -> Throwable <- Exception  <- Checked exception(IoException, SQLException etc)
+                                         |
+                                  RuntimeException(Unexpected)
+
+-Error и его подклассы - ошибки виртуальной машины джава.
+Их не надо пытаться обрабатывать, мы не сможем помочь виртуальной машине
+
+-Exception & RuntimeException - ошибки со стороны программиста, их нужно обрабатывать:
+1)Exception исключения являются проверяемыми, за ними внимательно следит компилятор, чтобы такие
+исключения контролировались и обрабатывались
+
+-->Создание своего класса исключений:
+Исключение создается как обычный класс, наследующий Exception/RuntimeException
+Обычно выбирается RuntimeException
+Заводятся 2 конструктора, которые вызывают родительский:
+1)Сообщение, которое будет выведено
+    public CalculatorException(String message) {
+        super(message);
+    }
+2)Принимает cause(причину):
+    public CalculatorException(String message, Trowable cause) {
+        super(message, cause);
+    }
+
+
+

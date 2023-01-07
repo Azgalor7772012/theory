@@ -1,0 +1,30 @@
+Исключения — это ошибки, обнаруженные во время выполнения программы (во время выполнения), тогда как
+синтаксические ошибки — это ошибки, обнаруженные при компиляции программы в байт-код. Исключение прерывает
+нормальное выполнение программы.
+
+Рассмотрим самые популярные и как с ними справляться:
+1. Деление на 0 / ArithmeticException:
+С помощью цикла if проверяем введенное число равно 0 или нет, если равно - выводим соответствующее сообщение
+
+if (b == 0) {
+            System.out.println("Division by zero!");
+        } else {
+            System.out.println(a / b);
+
+2. Ввод букв, когда ожидались только цифры / NumberFormatException:
+Чтобы избежать этого исключения, можно проверить входную строку с помощью регулярного выражения
+
+ public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String input = scanner.nextLine();
+
+        if (input.matches("\\d+")) { // it checks if the input line contains only digits
+            int number = Integer.parseInt(input); // переводим строку в Integer
+            System.out.println(number + 1);
+        } else {
+            System.out.println("Incorrect number: " + input);
+        }
+
+
+
+

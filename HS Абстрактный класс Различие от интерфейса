@@ -1,0 +1,87 @@
+->Абстрактный класс - класс, содержащий поля и методы, которые мы хотим видеть в классах наследниках.
+То есть предположим у нас есть 3 класса, у которых мы хотим видеть минимум в виде каких-то полей и методов,
+тогда мы назначаем абстрактный класс, в него заполняем поля и методы. Наследуемся от этого класса и вуаля
+у нас есть классы с нужными нам полями и методами.
+
+->Абстрактные классы имеют некоторые особенности:
+1)Невозможно создать экземпляр абстрактного класса;
+2)Абстрактный класс может содержать абстрактные методы, которые должны быть реализованы в неабстрактных подклассах;
+3)Он может содержать поля и неабстрактные методы (в том числе статические);
+4)Абстрактный класс может расширять другой класс, в том числе абстрактный;
+5)Он может содержать конструктор.
+6)Абстрактный метод не может быть статическим
+
+
+->2 основных отличия от обычного класса:
+1. Из абстрактного класса нельзя создать экземпляр
+2. Если класс содержит хотя бы один абстрактный метод, то он должен быть абстрактным(обычный класс не может содержать
+этого метода)
+
+Пример:
+public abstract class Pet {
+
+    protected String name;
+    protected int age;
+
+    protected Pet(String name, int age) {  // Есть конструктор, но создать экземпляр не можем
+        this.name = name;
+        this.age = age;
+    }
+
+    public abstract void say(); // an abstract method
+}
+
+class Cat extends Pet {
+
+    // It can have additional fields as well
+
+    public Cat(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void say() {
+        System.out.println("Meow!");
+    }
+}
+
+class Dog extends Pet {
+
+    // It can have additional fields as well
+
+    public Dog(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public void say() {
+        System.out.println("Woof!");
+    }
+}
+
+Dog dog = new Dog("Boss", 5);
+Cat cat = new Cat("Tiger", 2);
+
+dog.say(); // it prints "Woof!"
+cat.say(); // it prints "Meow!"
+
+->Абстрактный класс и интерфейс и их разница:
+Интерфейс это просто контракт, который говорит, что в классе, в который имплементирован интерфейс будут все методы ин-
+терфейса. Абстрактный класс же говорит чем является объект класса наследника. То есть мы создаем абстрактный класс
+для какой-то группы и после наследуем классы от абстрактного. Например Animal - абстрактный, Dog,Cat - его наследники;
+Human - абстрактный, Masha, Pasha - наследники.
+
+Это главное отличие, но есть и другие, такие как:
+1)Интерфейс описывает только поведение. У него нет состояния. А у абстрактного класса состояние есть: он описывает
+и то, и другое.
+2)Абстрактные классы объединяют между собой классы, которые имеют близкую связь(Animal - Dog), в то время, как
+интерфейсы могут реализовывать совершенно несвязанные друг с другом классы.
+3)Классы могут реализовывать сколько угодно интерфейсов, но наследоваться только от одного класса
+an abstract class can have abstract and non-abstract instance methods while an interface can have abstract or default instance methods;
+an abstract class can extend another abstract or regular class and an interface can only extend another interface;
+an abstract class can extend only one class while an interface can extend any number of interfaces;
+an abstract class can have final, non-final, static, non-static variables (regular fields) while an interface can only have static final variables;
+an abstract class can provide an implementation of an interface but an interface cannot provide an implementation of an abstract class;
+an abstract class can have a constructor and an interface cannot;
+in an abstract class, the keyword abstract is mandatory to declare a method as an abstract one while in an interface this keyword is optional.
+

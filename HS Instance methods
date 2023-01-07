@@ -1,0 +1,91 @@
+class Human {
+    String name;
+    int age;
+
+    public static void printStatic() {
+        System.out.println("It's a static method");
+    }
+
+    public void printInstance() {
+        System.out.println("It's an instance method");
+    }
+}
+
+Здесь представлены 2 метода, оба они public - говорит о том, что к ним есть доступ из других классов.
+Однако один из них static , а другой нет.
+-->Наличие ключевого слова static говорит о том, что этот метод может быть вызван без экземпляра класса метода.
+То есть если есть static, то для вызова метода не нужно создавать его экземпляр(объект) класса;
+ если static нет, то придется создать экземпляр класса и через класс вызывать метод этого класса.
+
+-->Чтобы вызвать статический метод, нам не нужно создавать объект. Мы просто вызываем метод с именем класса.
+public static void main(String[] args) {
+
+    Human.printStatic(); // will print "It's a static method"
+}
+Для не статического метода:
+public static void main(String[] args) {
+
+    Human peter =  new Human();
+    peter.printInstance(); // will print "It's an instance method"
+
+    Human alice =  new Human();
+    alice.printInstance(); // will print "It's an instance method"
+}
+
+Instance method - это метод, принадлежащий каждому созданному нами объекту определенного класса.
+
+--> Ключевое слово this
+Ключевое слово this представляет конкретный экземпляр класса.
+Пример:
+class Human {
+    String name;
+    int age;
+
+    public static void averageWorking() {
+        System.out.println("An average human works 40 hours per week.");
+    }
+
+    public void work() {
+        System.out.println(this.name + " loves working!"); //  Ключевое слово this
+    }
+}
+
+// Уже другой класс - основный
+public static void main(String[] args) {
+
+    Human.averageWorking(); // "An average human works 40 hours per week."
+
+    / Создаем экземпляры класса и заполняем поле name класса Human значением
+    Human peter =  new Human();
+    peter.name = "Peter";
+    peter.work(); // "Peter loves working!"
+
+
+    Human alice =  new Human();
+    alice.name = "Alice";
+    alice.work(); // "Alice loves working!"
+}
+Теперь у нас разные результаты для метода work! Ключевое слово this позволяет нам получить доступ к
+значению конкретного объекта. То есть когда мы пишем this.name мы говорим Java, что name - это поле класса,
+а не какое-то другое name(например аргумент метода) и Java понимает, что this.name = name, значит присвой
+полю класса name значение аргумента name.
+Например:
+class Person {
+    String name;
+
+    void setName(name) {
+    this.name = name
+    }
+}
+Это ключевое слово this является необязательным, поэтому код будет работать и без него. Но это хорошая
+практика, чтобы добавить его.
+
+Резюме:
+1) Статический(static) метод связан с классом, а экземпляра нет
+2) Метод экземпляра может быть вызван только через экземпляр класса(объект), поэтому сначала нужно его
+создать.
+3)Экземплярный метод (Instance method) может получить доступ к полям класса с помощью специального слова
+this.
+4) Если в static method нам в скобках нужно указывать переменные, которые будут использоваться, даже если
+они уже есть в классе, в котором создан этот метод, то в Instance method мы можем не указывать в скобках
+переменные, которые уже есть в этом классе.

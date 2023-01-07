@@ -1,0 +1,64 @@
+Template method(ШАБЛОННЫЙ МЕТОД) - поведенческий паттерн, описывающий общий алгоритм, в то время, как подклассы
+реализуют шаги этого алгоритма.
+
+Выглядит это так:
+1)Создается абстрактный класс для других классов, с Template method, где используются
+все нужные нам методы
+2)Другие классы наследуют этот абстрактный класс и изменяют какие-то методы
+3)В нужном нам месте вызываем главный метод абстрактного класса через нужные нам экземпляры
+дочерних классов(при этом методы будут одни и те же, но мы в дочерних их оверрайдим)
+
+// АБСТРАКТНЫЙ КЛАСС
+public abstract class Worker {
+
+    public void work() {
+        goToWork();
+
+        workingProcess();
+
+        goHome();
+    }
+
+    public void goToWork() {
+        System.out.println("= I'm going to work sadly =");
+    }
+
+    public void goHome() {
+        System.out.println("= I'm going home happy =");
+    }
+
+    public abstract void workingProcess();
+}
+
+// КЛАССЫ НАСЛЕДНИКИ
+public class Programmer extends Worker {
+
+    @Override
+    public void workingProcess() {
+        System.out.println(" > I'm a programmer");
+        System.out.println(" > I drink coffee");
+        System.out.println(" > I write code");
+        System.out.println(" > I drink coffee again");
+        System.out.println(" > I write code again");
+    }
+}
+
+public class Actor extends Worker {
+
+    @Override
+    public void workingProcess() {
+        System.out.println(" > I'm an actor");
+        System.out.println(" > I read a scenario");
+        System.out.println(" > I get used to role ");
+        System.out.println(" > I play a role");
+   }
+}
+// МЕТОД, В КОТОРОМ ВЫЗЫВАЮТСЯ КЛАССЫ НАСЛЕДНИКИ
+public class TemplateMethodDemo {
+    public static void main(String[] args) {
+        Worker programmer = new Programmer();
+        Worker actor = new Actor();
+        programmer.work();
+        actor.work();
+    }
+}

@@ -1,0 +1,22 @@
+        Iterable                        Map
+           |                             |
+      Collections - Queue          HashMap,TreeMap,LinkedHashMap, HashTable(не рекомендуется к использованию)
+      |        |
+     List     Set
+      |        |
+      |     HashSet,TreeSet,LinkedHashSet
+      |
+ArrayList, LinkedList(Также реализовывает интерфейс Queue), Vector и Stack(оба не желательны к использованию)
+
+HashMap, HashSet - не повторяются элементы, не отсортирован
+TreeSet, TreeMap - не повторяются эл-ты + элементы отсортированы.
+LinkedHashSet, LinkedHashMap - эл-ты хранятся в порядке их добавления
+
+1)Если порядок элементов не важен, то используем HashSet , HashMap
+2)Если объекты должны быть отсортированы используем TreeSet, TreeMap
+3)Если объекты должны храниться в порядке их добавления, то используем LinkedHashMap, LinkedHashSet
+4)Если в качестве ключа используется динамический объект, то при изменение поля объекта, которое
+используется на расчета hashCode, объект может потеряться из коллекции
+
+Stack - LIFO(LAST IN FIRST OUT)
+Queue - FIFO(FIRST IN FIRST OUT) как в очереди

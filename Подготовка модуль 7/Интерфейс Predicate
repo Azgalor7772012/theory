@@ -1,0 +1,45 @@
+Predicate<T>
+-Имеет один абстрактный метод:
+    boolean test(T t);
+
+Способ реализации:
+        PredicateEx test = new PredicateEx(); //Экземпляр класса для вызова метода
+        test.testStudents(students, elem -> elem.age > 30);
+
+    void testStudents(ArrayList<Student> arr, Predicate<Student> pr) { //метод, аргументом принимает экземпляр Predicate
+        for (Student elem : arr) {
+           if (pr.test(elem)) {
+               System.out.println(elem);
+           }
+        }
+    }
+
+У коллекций есть метод al.removeIf(predicate), который параметром принимает Predicate и в зависимости
+от реализации удалит какие-то элементы
+
+ List<String> someList = new ArrayList<>();
+        someList.add("hello");
+        someList.add("qwer");
+        someList.add("qwerty");
+
+        //Удаляем элемент "qwer"
+        someList.removeIf(elem -> elem.length() < 5);
+        System.out.println(someList);
+        //Еще можно так:
+        Predicate<String> p = elem -> elem.length() < 5;
+        someList.removeIf(p);
+
+Также есть default методы у Predicate:
+1) p1.and(p2) логическое && - удалит элемент, если оба условия совпали
+        //Можно объединить методы фильтрации
+        Predicate<Student> p1 = elem -> elem.age < 25;
+        Predicate<Student> p2 = elem -> elem.sex == 'm';
+
+        test.testStudents(students, p1.and(p2));
+
+2)p1.or(p2) логическое || - удалит элемент, если хотя бы 1 условие совпало
+        test.testStudents(students, p1.or(p2));
+
+3)p1.negate() логическое ! - удалит, если условия наоборот, то есть !(p1)
+        //negate то же самое, что ! то есть отрицает проверку
+        test.testStudents(students, p1.negate()); // То есть возраст 25 или более

@@ -1,0 +1,110 @@
+--> При получении исключения Java прерывает нормальное исполнение кода,но мы можем написать код, который
+будет обрабатывать исключения, в этом случае прерывания исполнения программы не будет. Для этого
+предусмотрен механизм обработки исключений(работает как с checked, так и с unchecked exceptions).
+Обычно исключения должно ловиться в методе, где достаточно информации для обработки исключения.
+
+--> 3 ключевых слова для обработки исключений:
+1)try
+2)catch
+3)finally
+
+-->Общий вид следующий:
+try {
+    // code that may throw an exception
+} catch (Exception e) {
+    // code for handling the exception
+}
+
+В блоке catch должен быть указан класс, расширяющий класс Throwable. В нашем примере этот блок может
+обрабатывать все исключения из класса Exceptions и его дочерних классов.
+
+-->Вот как оно работает на примере:
+
+System.out.println("before the try-catch block"); // it will be printed
+
+try {
+    System.out.println("inside the try block before an exception"); // it will be printed
+
+    System.out.println(2 / 0); // it throws ArithmeticException
+
+    System.out.println("inside the try block after the exception"); // it won't be printed
+} catch (Exception e) {
+    System.out.println("Division by zero!"); // it will be printed
+}
+
+System.out.println("after the try-catch block"); // it will be printed
+
+ПОСЛЕ ПОЛУЧЕНИЯ ИСКЛЮЧЕНИЯ В БЛОКЕ TRY, КОД ЛЕЖАЩИЙ ПОСЛЕ ИСКЛЮЧЕНИЯ ВЫПОЛНЯТЬСЯ НЕ БУДЕТ И МЫ ИДЕМ СРАЗУ В БЛОК
+CATCH, ВЫПОЛЯЕМ ЕГО И ПРОДОЛЖАЕМ ВЫПОЛНЯТЬ КОД ПРОГРАММЫ ДАЛЬШЕ, УЖЕ ЗА ПРЕДЕЛАМИ БЛОКА TRY-CATCH.
+
+--> try-catch оператор может обрабатывать как проверенные(checked), так и непроверенные(unchecked) исключения,но
+Checked исключения должны быть обернуты в try-catch блок, а непроверенные не должны быть обернуты.
+
+--> Когда исключение перехватывается catch блоком, можно получить некоторую информацию о нем:
+
+    try {
+        double d = 2 / 0;
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+Этот код печатает:
+An exception occured: / by zero
+
+-->Java поддерживает использование нескольких обработчиков внутри одного try блока. Похоже на if, Java
+определяет подходящее исключение, просматривая предложенные сверху вниз
+try {
+    // code that throws exceptions
+} catch (IOException e) {
+    // handling the IOException and its subclasses
+} catch (Exception e) {
+    // handling the Exception and its subclasses
+}
+Важно, catch блок с базовым классом должен быть написан ниже всех блоков с подклассами. Другими словами,
+более специализированные обработчики (такие как IOException) должны быть написаны перед более
+общими (такими как Exception). В противном случае код не будет компилироваться. Ну и логично, что если изначально
+написать класс-родитель, то код просто не дойдет до класса-наследника.
+
+-->Можно использовать синтаксис multi-catch для одинаковой обработки нескольких исключений:
+
+try {
+    // code that may throw exceptions
+} catch (SQLException | IOException e) {
+    // handling SQLException, IOException and their subclasses
+    System.out.println(e.getMessage()); // Удобное сообщение с тем, что не так
+} catch (Exception e) {
+    // handling any other exceptions
+    System.out.println("Something goes wrong");
+}
+В приведенном выше коде SQLException и IOException(альтернативы) разделены | символом. Они будут
+обработаны одинаковым образом.
+Важно, что альтернативы в операторе multi-catch не могут быть подклассами друг друга.
+
+--> Наконец блок finally будет выполняться всегда, без разницы словили мы исключение или нет:
+try {
+    System.out.println("inside the try block");
+    Integer.parseInt("101abc"); // throws NumberFormatException
+} catch (Exception e) {
+    System.out.println("inside the catch block");
+} finally {
+    System.out.println("inside the finally block");
+}
+
+System.out.println("after the try-catch-finally block");
+
+Получаем:
+inside the try block
+inside the catch block
+inside the finally block
+after the try-catch-finally block
+Если мы удалим строку, которая выдает NumberFormatException, finally блок все равно будет выполняться
+после try блока.
+
+-->Второй способ, который можно использовать только с checked exception, просто даст скомпилировать код, но выведет
+его как обычную ошибку большой красной надписью:
+public static String readLineFromFile() throws FileNotFoundException {
+    Scanner scanner = new Scanner(new File("file.txt")); // java.io.FileNotFoundException
+    return scanner.nextLine();
+}
+Если есть возможность получить Checked exception, то нам к методу необходимо добавить throws FileNotFoundException, чтобы
+код мог скомпилироваться. При этом так можно сделать только с checked exceptions. Также checked exceptions можно
+обработать как и unchecked exceptions с помощью блока try-catch.

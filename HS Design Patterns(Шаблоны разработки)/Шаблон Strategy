@@ -1,0 +1,55 @@
+Шаблон Strategy применяется, когда есть много Switch, if при этом нужно добавлять еще алгоритмы.
+Strategy - один из самых популярных шаблонов в ООП. Он определяет семейство алгоритмов, инкапсулирует
+каждый в отдельный класс и делает их взаимосвязанными внутри этого семейства
+
+Делается следующим образом:
+1) Создается абстрактный класс / интерфейс с общими методами
+2) Наследуются классы от него и переназначаются методы
+3) Создается класс Context, где создается:
+ 1.поле типа Объект
+ 2.метод для назначения этого объекта - мы будем в качестве аргументов передавать классы,
+ которые унаследовались от абстрактного класса
+ 3.метод, который назначает действие для этого объекта, причем действие - это метод
+ из абстрактного класса
+
+ // АБСТРАКТНЫЙ КЛАСС / ИНТЕРФЕЙС
+Interface SendingMethod {
+
+    void send(String from, String to, String msg);
+}
+
+// КЛАСС - НАСЛЕДНИК
+class SmsSendingMethod implements SendingMethod {
+
+    @Override
+    public void send(String from, String to, String msg) {
+        System.out.println(String.format("send SMS from '%s' to '%s'", from, to));
+    }
+}
+
+// КЛАСС - НАСЛЕДНИК
+class EmailSendingMethod implements SendingMethod {
+
+    @Override
+    public void send(String from, String to, String msg) {
+        System.out.println(String.format("Email from '%s' to '%s'", from, to));
+    }
+}
+
+// Наш Context - MessageSender,который ссылается на метод отправки и позволяет нам изменить используемый
+в настоящее время метод:
+
+class MessageSender {
+
+    private SendingMethod method;
+
+    // it may contain additional fields as well
+
+    public void setMethod(SendingMethod method) {
+        this.method = method;
+    }
+
+    public void send(String from, String to, String msg) {
+        this.method.send(from, to, msg);
+    }
+}

@@ -1,0 +1,69 @@
+Исключения - возникновение ошибок и непредвиденных ситуаций в ходе выполнения программы.
+!!!!Док по вопросам от учащихся:
+https://docs.google.com/document/d/190SjQzSDCNX_1Lu5-KuFxmsm4rdoH-IE/edit#
+
+
+->Обработка исключений происходит с помощью блока try-catch:
+try – определяет блок кода, в котором может произойти исключение;
+catch – определяет блок кода, в котором происходит обработка исключения;
+finally – определяет блок кода, который является необязательным, но при его наличии выполняется
+в любом случае независимо от результатов выполнения блока try.
+Могут использоваться конструкции try{}catch{}; try{}catch{}finally{}; try{}finally{}
+
+Также есть следующие ключевые слова:
+throw – используется для возбуждения исключения;
+throws – используется в сигнатуре методов для предупреждения, о том что метод может выбросить исключение.
+
+Ключевое слово throws используется, когда мы не хотим или не можем по каким-то причинам обработать
+исключение в методе, где оно возникает и указываем после объявления метода о том, что оно может выбросить
+исключение с помощью:
+    void someMethod(int a) throws Exception {}
+Такой способ позволяет конечному пользователю самостоятельно обработать возможное исключение.
+
+
+
+Error -> Throwable <- Exception  <- Checked exception(IoException, SQLException etc)
+                                         |
+                                  RuntimeException(Unchecked)
+
+Exception:
+1)IoException + у него 4 подкласса(EOFException, FileNotFoundException, MalformedURLException, UnknownHostException
+2 и 3)ClassNotFoundException,CloneNotSupportedException
+
+Runtime Exceptions:
+IndexOutOufBoundsException, NullPointerException, ArithmeticException, ClassCastException,
+IllegalArgumentException, IllegalStateException, NoSuchElementException,
+
+Исключения можно разделить на 2 группы:
+1)Ситуации, при которых восстановление дальнейшей нормальной работы программы невозможно
+Это все, что связано с JVM - класс Error - unchecked
+2)Восстановление возможно - класс Exception
+
+->Блок finally является опциональным, сделан для того, чтобы разработчики могли закрыть открытые в
+блоки try потоки, но не всегда возможно уследить за всеми открытыми потоками, поэтому есть
+try-with-resources, при использовании которого гарантируется, что все открытые в блоке try
+потоки будут закрыты.
+При этом открытие потоков происходит в круглых скобках после try:
+    try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)) ;
+        FileWriter writer = New FileWriter("text2"; // Через ; можно открывать несколько потоков
+    ){
+            s = reader.readLine();
+    } catch (IOException e) {
+           System.out.println(e.getMessage());
+    }
+Также в блок catch можно через или запихнуть несколько исключений
+catch(NPE || ArithmeticException || ...)
+->! Потоки в блоки try() должны имплементировать интерфейс AutoCloseable.
+
+->Все ислкючения наследуются от класса Throwable, у которого следующие методы:
+1)public String getMessage()
+2)public void printStackTrace()
+3)public StackTraceElement[] getStackTrace()
+4)public Throwable getCause()
+5)public Throwable[] getSuppressed()
+
+-->Топ 10 вопросов по исключениям(внизу статьи статья на исключения):
+https://javarush.ru/groups/posts/895-top-10-voprosov-ob-iskljuchenijakh-v-java
+
+--> Try-with-resources:
+https://rukovodstvo.net/posts/id_1114/

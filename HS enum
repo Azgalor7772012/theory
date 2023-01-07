@@ -1,0 +1,45 @@
+Enum - перечисление, аналогичное объявлению классов.
+Создается оно как класс, правой кнопкой мыши на  src:
+public enum Season {
+    SPRING, SUMMER, AUTUMN, WINTER // four instances
+}
+Здесь мы видим константы, их может быть сколько угодно, они записываются через запятую
+Перечисление можно рассматривать как класс с предопределенными экземплярами. Здесь у
+нас есть четыре экземпляра сезонов SPRING, SUMMER, AUTUMN и WINTER внутри хранилища Season.
+
+-->Чтобы проинициализировать переменную типа Season, нужно обратиться не как с классом:
+Season timeOfYear = Season.SPRING;
+Теперь переменная timeOfYear имеет значение SPRING;
+
+-------------------------------------------
+public enum UserStatus {
+    PENDING, ACTIVE, BLOCKED
+}
+
+
+--> Методы при работе с enum:
+1)Метод .name() позволяет получить доступ к имени значения перечисления
+   System.out.println(active.name()); // ACTIVE
+
+2)Метод .values() позволяет получить все константы перечисления в массиве:
+   UserStatus[] statuses = UserStatus.values(); // [PENDING, ACTIVE, BLOCKED]
+
+3)Метод ordinal() возвращает порядковый номер экземпляра перечисления:
+   System.out.println(active.ordinal()); // 1 (starting with 0)
+   System.out.println(UserStatus.BLOCKED.ordinal()); // 2
+
+4)Несмотря на то, что перечисление является ссылочным типом, две переменные можно правильно
+сравнить с помощью как equals метода, так и оператора ==.
+   System.out.println(active.equals(UserStatus.ACTIVE)); // true
+   System.out.println(active == UserStatus.ACTIVE); // true
+
+5)Один из лучших способов перебрать перечисление — использовать цикл for/for-each Давайте применим его
+ к нашему образцу перечисления:
+       for (UserStatus status : UserStatus.values()) {
+           System.out.println(status);
+       }
+   /* the output is
+   PENDING
+   ACTIVE
+   BLOCKED
+   */

@@ -1,0 +1,83 @@
+->Шаблон factory позволяет вызывать объекты классов внутри одного класса, передавая необходимое имя класса
+параметром.
+То есть у нас есть один общий класс для вызова экземпляров любых классов.
+Бывают следующие примеры фабрик:
+static factory, simple factory, factory method and abstract factory
+
+Пример статической фабрики(factory):
+
+class Computer {
+
+    private long ram;
+    private long cpu;
+
+    // getters and setters
+}
+
+class PC extends Computer {
+
+    // additional members
+}
+
+class Laptop extends Computer {
+
+    // additional members
+}
+
+class ComputerStaticFactory {
+
+    public static Computer newInstance(String type) {
+        if (type.equals("Computer")) {
+            return new Computer();
+        } else if (type.equals("PC")) {
+            return new PC();
+        } else if (type.equals("Laptop")) {
+            return new Laptop();
+        }
+        return null; // if not a suitable type
+    }
+}
+
+public class FactoryClient {
+
+    public static void main(String args[]) {
+
+        Computer pc = ComputerStaticFactory.newInstance("PC");
+        System.out.println(pc instanceof PC); // prints "true"
+
+        Computer laptop = ComputerStaticFactory.newInstance("Laptop");
+        System.out.println(laptop instanceof Laptop); // prints "true"
+    }
+}
+
+То есть с помощью ComputerStaticFactory.newInstance("PC") мы вызываем объект класса PC. При этом создавать
+экземпляр клосса ComputerStaticFactory не нужно т.к метод статический.
+
+--> Следующий вид фабрики - простая(Simple factory idiom). Основное отличие здесь - метод не является
+статическим, поэтому нужно создавать экземпляр класса.
+
+class ComputerFactory {
+
+    // it may contain some fields
+
+    public Computer newInstance(String type) {
+        if (type.equals("Computer")) {
+            return new Computer();
+        } else if (type.equals("PC")) {
+            return new PC();
+        } else if (type.equals("Laptop")) {
+            return new Laptop();
+        }
+        return null;
+    }
+}
+Чтобы использовать метод создаем экземпляр класса:
+ComputerFactory factory = new ComputerFactory();
+Computer pc = factory.newInstance("PC");
+
+
+Возможны несколько особенностей реализаций Factory:
+1)метод newInstance принимает ComputerStaticFactory тип enum для ограничения возможных значений;
+2)метод newInstance выдает исключение, если вместо возврата передается неподходящий тип null;
+3)переместите метод newInstance непосредственно в основание иерархии: Computer class;
+4)фабрика может иметь несколько методов, которые производят экземпляры разных классов или экземпляр класса по умолчанию.

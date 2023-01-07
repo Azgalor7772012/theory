@@ -1,0 +1,66 @@
+-->Ключевое слово super может использоваться в нескольких случаях:
+1. Для доступа к полям экземпляра родительского класса;
+2. Вызывать методы родительского класса;
+3. Для вызова конструкторов родительского класса (без параметров или с параметрами).
+
+Ключевое слово super может использоваться для доступа к методам экземпляра или полям суперкласса. В некотором
+смысле оно похоже на ключевое слово this, но относится к непосредственному объекту родительского класса.
+Пример:
+class SuperClass {
+
+    protected int field;
+}
+
+class SubClass extends SuperClass {
+
+    protected int field;
+
+    public SubClass() {
+    this.field = 30;  // Инициализируем поле сабкласса
+    field = 30;       // Тоже инициализируем поле сабкласса
+    super.field = 20; // Инициализируем поле суперкласса
+    }
+
+    public void printSubValue() {
+        super.printBaseValue(); // Вызывает метод из родительского класса с помощью слово super, хотя оно
+        тут не обязательно. Оно было бы обязательно, если бы мы переопределили этот метод в нашем дочернем
+        классе и хотели бы вызвать именно метод из родительского класса
+        System.out.println(field);
+        }
+}
+
+-->Конструкторы не наследуются подклассами, но конструктор суперкласса может быть вызван из подкласса с
+помощью ключевого слова super в скобках super(...):
+При этом, если в нашем основном классе имеется конструктор, то наследуя этот класс, нам нужно либо:
+1) Создать второй конструктор у родительского класса, который не принимает аргументов либо
+2) В конструктор дочернего класса вставить super(...) и в скобках поля, необходимые для конструктора
+родительского класса. Иначе будет ошибка компиляции
+class Person {
+
+    protected String name;
+    protected int yearOfBirth;
+    protected String address;
+
+    public Person(String name, int yearOfBirth, String address) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.address = address;
+    }
+}
+
+class Employee extends Person {
+
+    protected Date startDate;
+    protected Long salary;
+
+    public Employee(String name, int yearOfBirth, String address, Date startDate, Long salary) {
+        super(name, yearOfBirth, address); // Вызываем конструктор родительского класса и передаем
+        ему необходимые аргументы. Очень похоже на this(...), только this вызывает другой констуктор
+        того же класса, а super родительский конструктор.
+
+        this.startDate = startDate;
+        this.salary = salary;
+    }
+}
+
+
